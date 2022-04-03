@@ -1,4 +1,4 @@
-const express = require('express');
+/*const express = require('express');
 const app = express();
 
 const PORT = process.env.PORT || 8080;
@@ -14,10 +14,10 @@ app.get('/*', (req, res) => {
 app.listen(PORT, () => {
     console.log('Servidor iniciado na porta ' + PORT);
 })
+*/
 
 
 
-/*
 const express = require('express');
 const app = express();
 
@@ -30,7 +30,7 @@ app.get('/*', (req, res) =>
 
 // Start the app by listening on the default Heroku port
 app.listen(process.env.PORT || 8080);
-*/
+
 
 /*
 // importar express
