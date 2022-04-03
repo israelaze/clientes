@@ -1,0 +1,90 @@
+<!-- Page Heading -->
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Cadastro de Clientes</h1>
+</div>
+
+<!-- Exibindo mensagens -->
+<div *ngIf="mensagemSucesso" class="w-50 p-2 alert alert-success alert-dismissible fade show" role="alert">
+     Cliente <strong>{{cliente.nome}}</strong>  cadastrado com sucesso.
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div *ngIf="mensagemErro" class="w-50 p-2 alert alert-danger mt-2 alert-dismissible fade show" role="alert">
+    <strong>Erro!</strong> {{mensagemErro}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<!-- Página -->
+<div class="row">
+    <div class="col-xl-12 col-md-12 mb-12">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+
+                <!--Formulário da página-->
+                <form [formGroup]="formCadastro" (ngSubmit)="cadastrar()">
+
+                    <!--capturando o campo nome do formulário-->
+                    <div class="row">
+                        <div class="col-md-5">
+                            <label>Nome do Cliente:</label>
+                            <input type="text" class="form-control" formControlName="nome" maxlength="50" />
+                            <!-- exibindo mensagens de validação-->
+                            <span *ngIf="form.nome.touched && form.nome.invalid">
+                                <span *ngIf="form.nome.errors.required" class="text-danger">
+                                    <i class="fa fa-exclamation-circle"></i> Campo obrigatório.
+                                </span>
+                                <span *ngIf="form.nome.errors.pattern" class="text-danger">
+                                    <i class="fa fa-exclamation-circle"></i> Você deve informar nome e sobrenome.
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                    <br />
+
+                    <!--capturando o campo cpf do formulário-->
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label>CPF:</label>
+                            <input type="text" class="form-control" formControlName="cpf" maxlength="11" />
+                            <!-- exibindo mensagens de validação-->
+                            <span *ngIf="form.cpf.touched && form.cpf.invalid">
+                                <span *ngIf="form.cpf.errors.required" class="text-danger">
+                                    <i class="fa fa-exclamation-circle"></i> Campo obrigatório.
+                                </span>
+                                <span *ngIf="form.cpf.errors.pattern" class="text-danger">
+                                    <i class="fa fa-exclamation-circle"></i> O cpf deve conter no mínimo 11 caracteres numéricos.
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                    <br />
+
+                    <!--capturando o campo email do formulário-->
+                    <div class="row">
+                        <div class="col-md-5">
+                            <label>Email:</label>
+                            <input type="text" class="form-control" formControlName="email" maxlength="40"/>
+                            <!-- exibindo mensagens de validação-->
+                            <span *ngIf="form.email.touched && form.email.invalid">
+                                <span *ngIf="form.email.errors.required" class="text-danger">
+                                    <i class="fa fa-exclamation-circle"></i> Campo obrigatório.
+                                </span>
+                                <span *ngIf="form.email.errors.pattern" class="text-danger">
+                                    <i class="fa fa-exclamation-circle"></i> Email inválido.
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                    <br />
+
+                    <!--Botão ubmit chama a função cadastrarCliente passando o conteúdo do formCadastro -->
+                    <input [disabled]="!formCadastro.valid" type="submit" value="Cadastrar Cliente" class="btn btn-success" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

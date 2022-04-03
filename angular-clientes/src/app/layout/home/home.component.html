@@ -1,0 +1,69 @@
+<!-- LAYOUT DO SISTEMA -->
+<div id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
+                <div class="sidebar-brand-icon">
+                    <i class="fas fa-users-cog "></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">Controle de Clientes</div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Gerenciamento
+            </div>
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Clientes</span>
+                </a>
+
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Ações:</h6>
+                        <a class="collapse-item" routerLink="cadastro-clientes">
+                            <i class="fas fa-user-plus"></i> Cadastrar Clientes</a>
+                        <a class="collapse-item" routerLink="consulta-clientes">
+                            <i class="fas fa-address-book"></i> Consultar/Editar Clientes</a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+                <div class="container-fluid">
+                    <!-- Local para exibir os componentes(páginas)-->
+                    <router-outlet></router-outlet>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; IAMF Informática 2022</span>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+</div>

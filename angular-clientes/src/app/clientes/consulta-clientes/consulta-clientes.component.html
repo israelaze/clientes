@@ -1,0 +1,186 @@
+<!-- Page Heading -->
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Consulta de Clientes</h1>
+</div>
+
+<!-- Exibindo mensagens -->
+<div *ngIf="mensagemSucesso" class="w-50 p-2 alert alert-success alert-dismissible fade show" role="alert">
+    Cliente <strong>{{cliente.nome}}</strong> excluído com sucesso.
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div *ngIf="mensagemErro" class="w-50 p-2 alert alert-danger mt-2 alert-dismissible fade show" role="alert">
+    <strong></strong> {{mensagemErro}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<!-- Página -->
+<div class="row">
+    <div class="col-xl-12 col-md-12 mb-12">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <input type="text" class="form-control" [(ngModel)]="pesquisa" placeholder="Pesquisar Clientes">
+                        </div>
+                    </div>
+                </div>
+
+                <table class="table table-hover table-sm">
+                    <thead>
+                        <tr>
+                            <th>Nome do Cliente</th>
+                            <th>CPF</th>
+                            <th>Email</th>
+                            <th width="100">Operações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr
+                            *ngFor="let item of clientes | filter: pesquisa | paginate : { itemsPerPage : 5, currentPage : page }">
+                            <td>{{item.nome}}</td>
+                            <td>{{item.cpf}}</td>
+                            <td>{{item.email}}</td>
+                            <td>
+                                <button class="btn btn-danger btn-sm" (click)="buscarId(item.idCliente)"
+                                    data-target="#janela_exclusao" data-toggle="modal">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                                &nbsp;
+                                <button class="btn btn-primary btn-sm" (click)="buscarId(item.idCliente)"
+                                    data-target="#janela_edicao" data-toggle="modal">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3">
+                                Total de clientes: {{clientes.length}}
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <pagination-controls (pageChange)="handlePageChange($event)" previousLabel="Anterior"
+                    nextLabel="Próximo">
+                </pagination-controls>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Janela modal para exclusão de clientes -->
+<div id="janela_exclusao" class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Excluir Cliente</h5>
+            </div>
+            <div class="modal-body">
+
+                <!-- Exibindo os dados do cliente -->
+                <p>Deseja realmente excluir o cliente selecionado?</p>
+                Nome do Cliente: <strong>{{cliente.nome}}</strong>
+                <br />
+                CPF: <strong>{{cliente.cpf}}</strong>
+                <br />
+                Email: <strong>{{cliente.email}}</strong>
+            </div>
+
+            <!-- Botões -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger " data-dismiss="modal" (click)="excluir(cliente.idCliente)"> 
+                    <i class="fa fa-trash"></i>  Confirmar Exclusão
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Janela modal para atualizar cliente -->
+<div id="janela_edicao" class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Atualizar Cliente</h5>
+            </div>
+            <div class="modal-body">
+
+                <div *ngIf="mensagemSucessoEdicao" class="alert alert-success">
+                    Cliente <strong>{{cliente.nome}}</strong> atualizado com sucesso.
+                </div>
+                
+                <div *ngIf="mensagemErroEdicao" class="alert alert-danger">
+                    <strong>Erro!</strong> {{mensagemErroEdicao}}
+                </div>
+
+                <form [formGroup]="formEdicao" (ngSubmit)="atualizar()">
+
+                    <!-- Campo Oculto (idCliente)-->
+                    <input type="hidden" formControlName="idCliente" [(ngModel)]="cliente.idCliente"/>
+
+                     <!--capturando o campo nome do formulário-->
+                    <div class="row">
+                        <div class="col-md-5">
+                            <label>Nome do Cliente:</label>
+                            <input type="text" class="form-control" formControlName="nome" maxlength="50"[(ngModel)]="cliente.nome"/>
+                            <!-- exibindo mensagens de validação-->
+                            <span *ngIf="form.nome.touched && form.nome.invalid">
+                                <span *ngIf="form.nome.errors.required" class="text-danger">
+                                    <i class="fa fa-exclamation-circle"></i> Informe o nome do cliente.
+                                </span>
+                                <span *ngIf="form.nome.errors.pattern" class="text-danger">
+                                    <i class="fa fa-exclamation-circle"></i> Você deve informar nome e sobrenome.
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                    <br>
+                    
+                    <!--capturando o campo email do formulário-->
+                    <div class="row">
+                        <div class="col-md-5">
+                            <label>Email:</label>
+                            <input type="text" class="form-control" formControlName="email" maxlength="40" [(ngModel)]="cliente.email"/>
+                            <!-- exibindo mensagens de validação-->
+                            <span *ngIf="form.email.touched && form.email.invalid">
+                                <span *ngIf="form.email.errors.required" class="text-danger">
+                                    <i class="fa fa-exclamation-circle"></i> Informe o email do cliente.
+                                </span>
+                                <span *ngIf="form.email.errors.pattern" class="text-danger">
+                                    <i class="fa fa-exclamation-circle"></i> Você deve informar um email para o campo.
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                    <br />
+
+                    <!-- exibindo o CPF no formulário-->
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label>CPF:</label>
+                            <input type="text" class="form-control" formControlName="cpf" readonly [(ngModel)]="cliente.cpf" />
+                        </div>
+                    </div>
+
+                    <!--Botão submit chama a função atualizar() passando o conteúdo do formEdicao -->
+                    <div class="text-right">
+                        <button type="button" class="btn btn-light" data-dismiss="modal">Fechar</button>
+                        &nbsp;
+                        <input [disabled]="!formEdicao.valid" type="submit" class="btn btn-success" value="Atualizar Cliente" /> 
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
