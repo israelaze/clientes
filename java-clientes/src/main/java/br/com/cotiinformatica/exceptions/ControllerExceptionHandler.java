@@ -19,15 +19,16 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
 	// Status code 500
-	@ExceptionHandler(ServiceException.class)
-	public ResponseEntity<StandardError> exception(Exception e, HttpServletRequest request) {
+		@ExceptionHandler(ServiceException.class)
+		public ResponseEntity<StandardError> exception(Exception e, HttpServletRequest request) {
 
-		Integer status = HttpStatus.INTERNAL_SERVER_ERROR.value();
-		String error = "ERRO";
+			Integer status = HttpStatus.INTERNAL_SERVER_ERROR.value();
+			String error = "ERRO";
 
-		StandardError standardError = new StandardError();
-		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(standardError);
-	}
+			StandardError standardError = new StandardError(Instant.now(), status, error, e.getMessage(),
+					request.getRequestURI());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(standardError);
+		}
 
 	// Status code 400
 	@ExceptionHandler(BadRequestException.class)
