@@ -25,8 +25,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 		Integer status = HttpStatus.INTERNAL_SERVER_ERROR.value();
 		String error = "ERRO";
 
-		StandardError standardError = new StandardError(Instant.now(), status, error, e.getMessage(),
-				request.getRequestURI());
+		StandardError standardError = new StandardError();
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(standardError);
 	}
 
