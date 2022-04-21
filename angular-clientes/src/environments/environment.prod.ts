@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  baseUrl: 'https://java-clientes.herokuapp.com/'
+  baseUrl: 'https://java-clientes.herokuapp.com/api/'
 };
