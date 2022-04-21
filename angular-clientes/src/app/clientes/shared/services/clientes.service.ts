@@ -10,7 +10,7 @@ import { Cliente } from '../model/cliente';
 export class ClientesService {
 
   // URL API WEB
-  endpoint = environment.baseUrl + "/clientes";
+  endpoint = environment.baseUrl + 'clientes';
 
   // INJEÇÃO DE DEPENDÊNCIA
   constructor(private httpClient: HttpClient) { }
@@ -27,7 +27,7 @@ export class ClientesService {
 
   // BUSCAR ID
   buscarId(idCliente: number): Observable<Cliente> {
-    return this.httpClient.get<Cliente>(this.endpoint + "/" + idCliente);
+    return this.httpClient.get<Cliente>(this.endpoint + '/' + idCliente);
   }
 
   // ATUALIZAR
@@ -37,7 +37,7 @@ export class ClientesService {
 
   // EXCLUIR
   excluir(idCliente: number) {
-    return this.httpClient.delete(this.endpoint + "/" + idCliente, { responseType: 'text' })
+    return this.httpClient.delete(this.endpoint + '/' + idCliente, { responseType: 'text' })
   }
   
 
