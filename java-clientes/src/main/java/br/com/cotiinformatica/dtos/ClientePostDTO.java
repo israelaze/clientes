@@ -10,7 +10,7 @@ public class ClientePostDTO {
 	private String nome;
 
 	@NotBlank(message = "{cpf.not.blank}")
-	@Size(max = 15, message = "{cpf.size}")
+	@Size(min= 11, max = 15, message = "{cpf.size}")
 	private String cpf;
 
 	@NotBlank(message = "{email.not.blank}")
