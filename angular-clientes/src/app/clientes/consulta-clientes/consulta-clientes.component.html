@@ -60,14 +60,15 @@
                             </td>
                         </tr>
                     </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="3">
-                                Total de clientes: {{clientes.length}}
-                            </td>
-                        </tr>
-                    </tfoot>
                 </table>
+
+                <tfoot>
+                    <tr>
+                        <td colspan="3">
+                            Total de clientes: {{clientes.length}}
+                        </td>
+                    </tr>
+                </tfoot>
 
                 <pagination-controls (pageChange)="handlePageChange($event)" previousLabel="Anterior"
                     nextLabel="Próximo">

@@ -1,0 +1,107 @@
+<!-- TELA DE CADASTRO DE USUÁRIO -->
+<div>
+    <div class="container">
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                    <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+                    <div class="col-lg-7">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h1 class="h2 text-gray-900 mb-4"><i class="fa fa-user-circle"></i> Criar minha conta
+                                </h1>
+                                Informe os seus dados abaixo para criar sua conta.
+                            </div>
+                            <br>
+
+                            <!--Formulário de cadastro -->
+                            <form [formGroup]="formCadastro" (ngSubmit)="cadastrar()" class="user">
+
+                                <!-- Exibindo mensagens -->
+                                <div *ngIf="mensagemSucesso" class="alert alert-success alert-dismissible fade show"
+                                    role="alert">
+                                    Usuário <strong>{{usuario.nome}}</strong> cadastrado com sucesso.
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+
+                                <div *ngIf="mensagemErro" class="alert alert-danger mt-2 alert-dismissible fade show"
+                                    role="alert">
+                                    <strong>Erro!</strong> {{mensagemErro}}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+
+                                <!--capturando o campo nome do formulário-->
+                                <div class="form-group">
+                                    <label>Nome:</label>
+                                    <input type="text" class="form-control form-control-user" formControlName="nome"
+                                        maxlength="60" />
+
+                                    <!-- exibindo mensagens de validação-->
+                                    <span *ngIf="form.nome.touched && form.nome.invalid">
+                                        <span *ngIf="form.nome.errors.required" class="text-danger">
+                                            <i class="fa fa-exclamation-circle"></i> Campo obrigatório.
+                                        </span>
+                                        <span *ngIf="form.nome.errors.pattern" class="text-danger">
+                                            <i class="fa fa-exclamation-circle"></i> Você deve informar nome e
+                                            sobrenome.
+                                        </span>
+                                    </span>
+                                </div>
+
+                                <!--capturando o campo email do formulário-->
+                                <div class="form-group">
+                                    <label>Email:</label>
+                                    <input type="email" class="form-control form-control-user" formControlName="email"
+                                        maxlength="40" />
+
+                                    <!-- exibindo mensagens de validação-->
+                                    <span *ngIf="form.email.touched && form.email.invalid">
+                                        <span *ngIf="form.email.errors.required" class="text-danger">
+                                            <i class="fa fa-exclamation-circle"></i> Campo obrigatório.
+                                        </span>
+                                        <span *ngIf="form.email.errors.pattern" class="text-danger">
+                                            <i class="fa fa-exclamation-circle"></i> Informe um email válido.
+                                        </span>
+                                    </span>
+                                </div>
+
+                                <!--capturando o campo senha do formulário-->
+                                <div class="form-group">
+                                    <label>Senha:</label>
+                                    <input type="password" class="form-control form-control-user"
+                                        formControlName="senha" maxlength="6" />
+
+                                    <!-- exibindo mensagens de validação-->
+                                    <span *ngIf="form.senha.touched && form.senha.invalid">
+                                        <span *ngIf="form.senha.errors.required" class="text-danger">
+                                            <i class="fa fa-exclamation-circle"></i> Campo obrigatório.
+                                        </span>
+                                        <span *ngIf="form.senha.errors.pattern" class="text-danger">
+                                            <i class="fa fa-exclamation-circle"></i> A senha deve conter de 4 a 6
+                                            caracteres.
+                                        </span>
+                                    </span>
+                                </div>
+
+                                <!--Botão ubmit chama a função cadastrar passando o conteúdo do formCadastro -->
+                                <input [disabled]="!formCadastro.valid" type="submit" value="Cadastrar Usuário"
+                                    class="btn btn-primary btn-user btn-block" />
+                            </form>
+                            <hr>
+                            <!--Botão de navegação para retornar à tela de login -->
+                            <div class="text-center">
+                                <button type="button" [routerLink]="['login']" class="btn btn-link">Fazer o
+                                    login</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

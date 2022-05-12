@@ -1,0 +1,78 @@
+<!-- TELA DE LOGIN -->
+<div class="bg-gradient-primary">
+    <div class="container">
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
+            <div class="col-xl-10 col-lg-12 col-md-9">
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <!-- Nested Row within Card Body -->
+                        <div class="row">
+                            <div class="col-lg-5 d-none d-lg-block bg-login-image"></div>
+                            <div class="col-lg-7">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h1 class="h4 text-gray-900 mb-4">Bem-vindo!</h1>
+                                    </div>
+                                    <!--Formulário de autenticação -->
+                                    <form [formGroup]="formLogin" (ngSubmit)="login()" class="user">
+
+                                        <!--Exibindo mensagens de erro-->
+                                        <div *ngIf="mensagemErro" class="alert alert-danger">
+                                            <strong>Erro!</strong> {{mensagemErro}}
+                                        </div>
+
+                                        <!--capturando o campo email do formulário-->
+                                        <div class="form-group">
+                                            <label>Email:</label>
+                                            <input type="email" class="form-control form-control-user"
+                                                formControlName="email" maxlength="40" />
+
+                                            <!-- exibindo mensagens de validação-->
+                                            <span *ngIf="form.email.touched && form.email.invalid">
+                                                <span *ngIf="form.email.errors.required" class="text-danger">
+                                                    <i class="fa fa-exclamation-circle"></i> Campo obrigatório.
+                                                </span>
+                                                <span *ngIf="form.email.errors.pattern" class="text-danger">
+                                                    <i class="fa fa-exclamation-circle"></i> Informe um email válido.
+                                                </span>
+                                            </span>
+                                        </div>
+
+                                        <!--capturando o campo senha do formulário-->
+                                        <div class="form-group">
+                                            <label>Senha:</label>
+                                            <input type="password" class="form-control form-control-user"
+                                                formControlName="senha" maxlength="6" />
+
+                                            <!-- exibindo mensagens de validação-->
+                                            <span *ngIf="form.senha.touched && form.senha.invalid">
+                                                <span *ngIf="form.senha.errors.required" class="text-danger">
+                                                    <i class="fa fa-exclamation-circle"></i> Campo obrigatório.
+                                                </span>
+                                                <span *ngIf="form.senha.errors.pattern" class="text-danger">
+                                                    <i class="fa fa-exclamation-circle"></i> A senha deve conter de 4 a
+                                                    6 caracteres.
+                                                </span>
+                                            </span>
+                                        </div>
+
+                                        <!--Botão submit chama a função autenticar() passando o conteúdo do formLogin-->
+                                        <button type="submit" [disabled]="!formLogin.valid"
+                                            class="btn btn-primary btn-user btn-block"> Entrar </button>
+
+                                    </form>
+                                    <hr>
+                                    <div class="text-center">
+                                        <button type="button" [routerLink]="['/cadastro-usuarios']"
+                                            class="btn btn-link">Criar conta</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

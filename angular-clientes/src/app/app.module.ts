@@ -10,24 +10,37 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CadastroClientesComponent } from './clientes/cadastro-clientes/cadastro-clientes.component';
 import { ConsultaClientesComponent } from './clientes/consulta-clientes/consulta-clientes.component';
+import { AutenticacaoComponent } from './layout/autenticacao/autenticacao.component';
+import { HomeComponent } from './layout/home/home.component';
+import { CadastroUsuariosComponent } from './usuarios/cadastro-usuarios/cadastro-usuarios.component';
+import { LoginComponent } from './usuarios/login/login.component';
+import { httpInterceptorProviders } from './_interceptors';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    ConsultaClientesComponent,
-    CadastroClientesComponent
+    AutenticacaoComponent,
+    HomeComponent,
+    LoginComponent,
+    CadastroUsuariosComponent,
+    CadastroClientesComponent,
+    ConsultaClientesComponent
   ],
   imports: [
-    BrowserModule,
-    HttpClientModule,
-    AppRoutingModule,
-    FormsModule,                         
-    ReactiveFormsModule, 
+    BrowserModule,   
+    AppRoutingModule,      
     NgxPaginationModule,                 
-    Ng2SearchPipeModule,  
+    Ng2SearchPipeModule,      
+    HttpClientModule,
+    FormsModule,                         
+    ReactiveFormsModule
   ],
-  providers: [],
+  //provedores de interceptação
+  providers: [
+    httpInterceptorProviders
+  ],
+
   bootstrap: [AppComponent]
 })
 export class AppModule { }
