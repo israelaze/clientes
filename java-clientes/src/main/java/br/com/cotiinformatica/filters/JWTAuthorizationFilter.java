@@ -1,4 +1,4 @@
-/*//Classe que permiti a somente aos usuários autenticados.(possuem o Token)acessar os serviços da API .Os demais são bloqueados.
+//Classe que permiti a somente aos usuários autenticados.(possuem o Token)acessar os serviços da API .Os demais são bloqueados.
 
 package br.com.cotiinformatica.filters;
 
@@ -70,4 +70,3 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 		return true;
 	}
 }
-*/

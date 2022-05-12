@@ -1,4 +1,4 @@
-/*//Classe para criptografar a senha do usuário
+//Classe para criptografar a senha do usuário
 
 package br.com.cotiinformatica.security;
 
@@ -41,6 +41,3 @@ public class Criptografia {
 		return null;
 	}
 }
-
-
-*/

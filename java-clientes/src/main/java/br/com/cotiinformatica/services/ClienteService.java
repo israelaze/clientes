@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import br.com.cotiinformatica.dtos.ClienteGetDTO;
@@ -23,29 +24,27 @@ import lombok.AllArgsConstructor;
 public class ClienteService {
 
 	private final ClienteRepository repository;
+	private final ModelMapper mapper;
 
 	public ClienteGetDTO cadastrar(ClientePostDTO dto) {
 
+		Optional<Cliente> result = repository.findByCpf(dto.getCpf());
+		
 		// verificar se o CPF já está cadastrado no banco de dados
-		if (repository.findByCpf(dto.getCpf()) != null) {
+		if (result.isPresent()) {
 			throw new BadRequestException("O CPF informado já encontra-se cadastrado. Tente outro.");
 		}
 
 		// inserir os dados do dto na entidade
 		Cliente cliente = new Cliente();
-		cliente.setNome(dto.getNome());
-		cliente.setCpf(dto.getCpf());
-		cliente.setEmail(dto.getEmail());
+		mapper.map(dto, cliente);
 		
 		//salvando
 		repository.save(cliente);
 		
 		//passando o cliente para um dto
 		ClienteGetDTO getDto = new ClienteGetDTO();
-		getDto.setIdCliente(cliente.getIdCliente());
-		getDto.setNome(cliente.getNome());
-		getDto.setCpf(cliente.getCpf());
-		getDto.setEmail(cliente.getEmail());
+		mapper.map(cliente, getDto);
 		
 		return getDto;
 	}
@@ -60,10 +59,7 @@ public class ClienteService {
 
 			// transferindo os dados do cliente pro objeto dto
 			ClienteGetDTO dto = new ClienteGetDTO();
-			dto.setIdCliente(cliente.getIdCliente());
-			dto.setNome(cliente.getNome());
-			dto.setCpf(cliente.getCpf());
-			dto.setEmail(cliente.getEmail());
+			mapper.map(cliente, dto);
 
 			// adicionar os clientes um a um na lista
 			lista.add(dto);
@@ -78,7 +74,7 @@ public class ClienteService {
 		Optional<Cliente> result = repository.findById(idCliente);
 
 		// verificar se o cliente não foi encontrado..
-		if (result == null || result.isEmpty()) {
+		if (result.isEmpty()) {
 			throw new EntityNotFoundException("Cliente não encontrado!");
 		}
 
@@ -89,10 +85,7 @@ public class ClienteService {
 		ClienteGetDTO dto = new ClienteGetDTO();
 
 		// transferindo os dados da entidade pro dto
-		dto.setIdCliente(cliente.getIdCliente());
-		dto.setNome(cliente.getNome());
-		dto.setCpf(cliente.getCpf());
-		dto.setEmail(cliente.getEmail());
+		mapper.map(cliente, dto);
 
 		return dto;
 	}
@@ -102,7 +95,7 @@ public class ClienteService {
 		// procurar o cliente no banco de dados atraves do id..
 		Optional<Cliente> result = repository.findById(dto.getIdCliente());
 
-		if (result == null || result.isEmpty()) {
+		if (result.isEmpty()) {
 			throw new EntityNotFoundException("Cliente não encontrado!");
 		}
 
@@ -110,8 +103,7 @@ public class ClienteService {
 		Cliente cliente = result.get();
 
 		// atualizando os dados do cliente(inserindo do dto para o cliente encontrado)
-		cliente.setNome(dto.getNome());
-		cliente.setEmail(dto.getEmail());
+		mapper.map(dto, cliente);
 
 		repository.save(cliente);
 
@@ -125,7 +117,7 @@ public class ClienteService {
 		Optional<Cliente> result = repository.findById(idCliente);
 
 		// verificar se o cliente não foi encontrado..
-		if (result == null || result.isEmpty()) {
+		if (result.isEmpty()) {
 			throw new EntityNotFoundException("Cliente não encontrado!");
 		}
 

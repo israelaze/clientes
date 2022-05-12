@@ -19,16 +19,16 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
 	// Status code 500
-		@ExceptionHandler(ServiceException.class)
-		public ResponseEntity<StandardError> exception(Exception e, HttpServletRequest request) {
+	@ExceptionHandler(ServiceException.class)
+	public ResponseEntity<StandardError> exception(Exception e, HttpServletRequest request) {
 
-			Integer status = HttpStatus.INTERNAL_SERVER_ERROR.value();
-			String error = "ERRO";
+		Integer status = HttpStatus.INTERNAL_SERVER_ERROR.value();
+		String error = "ERRO";
 
-			StandardError standardError = new StandardError(Instant.now(), status, error, e.getMessage(),
-					request.getRequestURI());
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(standardError);
-		}
+		StandardError standardError = new StandardError(Instant.now(), status, error, e.getMessage(),
+				request.getRequestURI());
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(standardError);
+	}
 
 	// Status code 400
 	@ExceptionHandler(BadRequestException.class)
@@ -54,18 +54,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(standardError);
 	}
 
-	// Status code 422
-	@ExceptionHandler(UnprocessableEntityException.class)
-	public ResponseEntity<StandardError> unprocessable(UnprocessableEntityException e, HttpServletRequest request) {
-
-		Integer status = HttpStatus.UNPROCESSABLE_ENTITY.value();
-		String error = "ERRO";
-
-		StandardError standardError = new StandardError(Instant.now(), status, error, e.getMessage(),
-				request.getRequestURI());
-		return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(standardError);
-	}
-
+	// Mensagens de validação
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {

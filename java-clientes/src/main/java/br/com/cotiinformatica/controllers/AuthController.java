@@ -1,4 +1,4 @@
-/*package br.com.cotiinformatica.controllers;
+package br.com.cotiinformatica.controllers;
 
 import javax.validation.Valid;
 
@@ -23,23 +23,19 @@ import lombok.AllArgsConstructor;
 @Api(tags = "Login")
 @RequestMapping(value = "/api/auth")
 public class AuthController {
-	
+
 	private final AuthService service;
-	
+
 	@PostMapping
 	@ApiOperation(value = "autenticar")
-	public ResponseEntity<AuthGetDTO> autenticar(@Valid @RequestBody AuthPostDTO dto){
-		
+	public ResponseEntity<AuthGetDTO> autenticar(@Valid @RequestBody AuthPostDTO dto) {
+
 		try {
 			AuthGetDTO getDto = service.autenticar(dto);
 			return ResponseEntity.ok(getDto);
-			
-		}
-		catch(ServiceException e) {
+
+		} catch (ServiceException e) {
 			return ResponseEntity.internalServerError().build();
-			
 		}
-	
 	}
 }
-*/

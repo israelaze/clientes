@@ -1,4 +1,4 @@
-/*//Classe para geração do Token do Usuário
+//Classe para geração do Token do Usuário
 
 package br.com.cotiinformatica.security;
 
@@ -27,11 +27,9 @@ public class TokenSecurity {
 				.claim("authorities",
 						grantedAuthorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
 				.setIssuedAt(new Date(System.currentTimeMillis()))
-				.setExpiration(new Date(System.currentTimeMillis() + 36000000)) // 10horas(36000000 milisegundos). Tempo de validação do token
+				.setExpiration(new Date(System.currentTimeMillis() + 900000)) // 15 min (em milisegundos). Tempo de validação do token
 				.signWith(SignatureAlgorithm.HS512, secretKey.getBytes()).compact();
 
 		return token;
 	}
-
 }
-*/
