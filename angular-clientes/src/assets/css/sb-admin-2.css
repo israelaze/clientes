@@ -4523,7 +4523,7 @@ input[type="button"].btn-block {
 }
 
 .card-body {
-  flex: 1 1 auto;
+  flex: 1 1 none;
   min-height: 1px;
   padding: 1.25rem;
 }
@@ -10434,7 +10434,7 @@ a:focus {
 }
 
 .sidebar.toggled {
-  width: 0 !important;
+  width: max-content !important;
   overflow: hidden;
 }
 
