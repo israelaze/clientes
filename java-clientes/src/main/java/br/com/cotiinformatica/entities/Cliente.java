@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -17,13 +19,13 @@ import lombok.NoArgsConstructor;
 @Entity   
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "cliente")
+@Table(name = "clientes")
 public class Cliente implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) 
-	@Column(name = "idcliente")
+	@Column(name = "idCliente")
 	private Integer idCliente;
 	
 	@Column(name = "nome", length = 60, nullable = false)
@@ -34,5 +36,9 @@ public class Cliente implements Serializable {
 	
 	@Column(name = "email", length = 60, nullable = false)
 	private String email;
+	
+	@ManyToOne
+	@JoinColumn(name = "idEndereco", nullable = false)
+	private Endereco endereco;
 	
 }

@@ -32,7 +32,7 @@ import lombok.AllArgsConstructor;
 @CrossOrigin
 public class ClientesController {
 
-	private ClienteService service;
+	private final ClienteService service;
 
 	@PostMapping
 	@ApiOperation(value = "cadastrar")
@@ -75,14 +75,14 @@ public class ClientesController {
 
 	@PutMapping
 	@ApiOperation(value = "atualizar")
-	public ResponseEntity<String> atualizar(@Valid @RequestBody ClientePutDTO dto) {
+	public ResponseEntity<ClienteGetDTO> atualizar(@Valid @RequestBody ClientePutDTO dto) {
 
 		try {
-			String response = service.atualizar(dto);
-			return ResponseEntity.ok(response);
+			ClienteGetDTO getDto = service.atualizar(dto);
+			return ResponseEntity.ok(getDto);
 
 		} catch (ServiceException e) {
-			return ResponseEntity.internalServerError().body(e.getMessage());
+			return ResponseEntity.internalServerError().build();
 		}
 	}
 

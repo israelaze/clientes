@@ -11,4 +11,5 @@ public class ClienteGetDTO {
 	private String nome;
 	private String cpf;
 	private String email;
+	private EnderecoGetDTO endereco;
 }

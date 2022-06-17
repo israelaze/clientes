@@ -18,5 +18,7 @@ public class ClientePutDTO {
 	@NotBlank(message = "{email.not.blank}")
 	@Email(message = "{email.email}")
 	private String email;
+	
+	private EnderecoPutDTO endereco;
 
 }

@@ -17,13 +17,13 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "usuario")
+@Table(name = "usuarios")
 public class Usuario implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "idusuario")
+	@Column(name = "idUsuario")
 	private Integer idUsuario;
 
 	@Column(name = "nome", length = 60, nullable = false)
