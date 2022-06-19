@@ -15,5 +15,5 @@ public class EnderecoGetDTO {
 	private String municipio;
 	private String estado;
 	private String cep;
-	private String observacao;
+	
 }

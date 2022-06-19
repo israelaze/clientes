@@ -25,24 +25,29 @@ public class EnderecoService {
 	private final EnderecoRepository enderecoRepository;
 	private final ModelMapper mapper;
 
-	public Endereco cadastrar(EnderecoPostDTO dto) {
+	public EnderecoGetDTO cadastrar(EnderecoPostDTO dto) {
 
-		// buscando um endereço
-		Optional<Endereco> result = enderecoRepository.findByNumeroAndCepAndComplemento(dto.getNumero(), dto.getCep(),
-				dto.getComplemento());
+		// buscando um endereço existente no banco
+		Optional<Endereco> result = enderecoRepository.findByNumeroAndCepAndComplemento(
+				dto.getNumero(), dto.getCep(), dto.getComplemento());
 
-		// retornando endereço já cadastrado(Não cadastro um endereço já cadstrado)
+		// caso exista
 		if (result.isPresent()) {
 			Endereco endereco = result.get();
-			return endereco;
+
+			// convertendo o endereço em dto e retornando
+			return getEndereco(endereco);
 		}
 
-		// cadastrando e salvando novo endereço
+		// convertendo o dto em endereço
 		Endereco endereco = new Endereco();
 		mapper.map(dto, endereco);
+		
 		enderecoRepository.save(endereco);
 
-		return endereco;
+		// convertendo o endereço em dto e retornando
+		return getEndereco(endereco);
+
 	}
 
 	public List<EnderecoGetDTO> buscarEnderecos() {
@@ -51,10 +56,8 @@ public class EnderecoService {
 		List<EnderecoGetDTO> listaGetDto = new ArrayList<EnderecoGetDTO>();
 
 		for (Endereco endereco : list) {
-			EnderecoGetDTO getDto = new EnderecoGetDTO();
-			mapper.map(endereco, getDto);
-
-			listaGetDto.add(getDto);
+			// convertendo o endereco em dto e adicionando na lista
+			listaGetDto.add(getEndereco(endereco));
 		}
 
 		return listaGetDto;
@@ -70,26 +73,33 @@ public class EnderecoService {
 
 		Endereco endereco = result.get();
 
-		EnderecoGetDTO getDto = new EnderecoGetDTO();
-		mapper.map(endereco, getDto);
-
-		return getDto;
+		// convertendo o endereco em dto e retornando
+		return getEndereco(endereco);
 	}
 
 	public EnderecoGetDTO atualizar(EnderecoPutDTO dto) {
 
-		// buscando um endereço
-		Optional<Endereco> result = enderecoRepository.findById(dto.getIdEndereco());
+		// buscando um endereço existente no banco
+		Optional<Endereco> result = enderecoRepository.findByNumeroAndCepAndComplemento(
+				dto.getNumero(), dto.getCep(), dto.getComplemento());
+		
+		// caso exista
+		if(result.isPresent()) {
+			Endereco endereco = result.get();
 
-		Endereco endereco = result.get();
+			// convertendo o endereço em dto e retornando
+			return getEndereco(endereco);
+		}
+		
+		Optional<Endereco> result2 = enderecoRepository.findById(dto.getIdEndereco());
+
+		Endereco endereco = result2.get();
 		mapper.map(dto, endereco);
 
 		enderecoRepository.save(endereco);
 
-		EnderecoGetDTO getDto = new EnderecoGetDTO();
-		mapper.map(endereco, getDto);
-
-		return getDto;
+		// convertendo o endereco em dto e retornando
+		return getEndereco(endereco);
 	}
 
 	public String excluir(Integer idEndereco) {
@@ -105,6 +115,15 @@ public class EnderecoService {
 		enderecoRepository.delete(endereco);
 
 		return "Endereço excluído com sucesso.";
+	}
+
+	// Método para converter um Endereco em getDto
+	public EnderecoGetDTO getEndereco(Endereco endereco) {
+		EnderecoGetDTO getDto = new EnderecoGetDTO();
+		mapper.map(endereco, getDto);
+
+		return getDto;
+
 	}
 
 }

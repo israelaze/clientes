@@ -41,7 +41,7 @@ public class Endereco implements Serializable {
 	@Column(length = 60)
 	private String complemento;
 	
-	@Column(length = 60)
+	@Column(length = 60, nullable = false)
 	private String bairro;
 	
 	@Column(length = 60)
@@ -52,10 +52,7 @@ public class Endereco implements Serializable {
 	
 	@Column(length = 15)
 	private String cep;
-
-	@Column(columnDefinition = "TEXT")
-	private String observacao;
-
+	
 	@OneToMany(mappedBy = "endereco")
 	private Set<Cliente> clientes = new HashSet<>();
 

@@ -15,11 +15,29 @@ public class ClientePostDTO {
 	@NotBlank(message = "{cpf.not.blank}")
 	@Size(min= 11, max = 15, message = "{cpf.size}")
 	private String cpf;
+	
+	@NotBlank(message = "{telefone.not.blank}")
+	private String telefone;
 
-	@NotBlank(message = "{email.not.blank}")
 	@Email(message = "{email.email}")
 	private String email;
 	
-	private EnderecoPostDTO endereco;
+	private String observacao;
+		
+	@NotBlank(message = "{logradouro.not.blank}")
+	private String logradouro;
+	
+	@NotBlank(message = "{numero.not.blank}")
+	private String numero;
+	
+	private String complemento;
+	
+	@NotBlank(message = "{bairro.not.blank}")
+	private String bairro;
+	
+	private String municipio;
+	private String estado;
+	private String cep;
+	
 	
 }

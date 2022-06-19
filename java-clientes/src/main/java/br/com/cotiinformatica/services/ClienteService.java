@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import br.com.cotiinformatica.dtos.ClienteGetDTO;
 import br.com.cotiinformatica.dtos.ClientePostDTO;
 import br.com.cotiinformatica.dtos.ClientePutDTO;
+import br.com.cotiinformatica.dtos.EnderecoGetDTO;
+import br.com.cotiinformatica.dtos.EnderecoPostDTO;
+import br.com.cotiinformatica.dtos.EnderecoPutDTO;
 import br.com.cotiinformatica.entities.Cliente;
 import br.com.cotiinformatica.entities.Endereco;
 import br.com.cotiinformatica.exceptions.BadRequestException;
@@ -36,21 +39,25 @@ public class ClienteService {
 			throw new BadRequestException("O CPF informado já encontra-se cadastrado. Tente outro.");
 		}
 
-		// cadastrando e retornando um endereço
-		Endereco endereco = endService.cadastrar(dto.getEndereco());
+		// convertendo um objeto dto(Endereco) em postDto(EnderecoPostDto)
+		EnderecoPostDTO postDto = new EnderecoPostDTO();
+		mapper.map(dto, postDto);
+		
+		// cadastrando um endereço e retornando um dto
+		EnderecoGetDTO getDTO = endService.cadastrar(postDto);
+
+		// convertendo o dto para Endereço
+		Endereco endereco = new Endereco();
+		mapper.map(getDTO, endereco);
 
 		// cadastrando novo Cliente
 		Cliente cliente = new Cliente();
 		mapper.map(dto, cliente);
 		cliente.setEndereco(endereco);
-
 		clienteRepository.save(cliente);
 
-		// passando o cliente para um dto
-		ClienteGetDTO getDto = new ClienteGetDTO();
-		mapper.map(cliente, getDto);
-
-		return getDto;
+		// convertendo o cliente em dto e retornando
+		return getCliente(cliente);
 	}
 
 	public List<ClienteGetDTO> buscarTodos() {
@@ -61,12 +68,8 @@ public class ClienteService {
 		// consultar e percorrer os clientes obtidos no banco de dados..
 		for (Cliente cliente : clienteRepository.findAll()) {
 
-			// transferindo os dados do cliente pro objeto dto
-			ClienteGetDTO dto = new ClienteGetDTO();
-			mapper.map(cliente, dto);
-
-			// adicionar os clientes um a um na lista
-			lista.add(dto);
+			// convertendo os clientes em dto e adicionando um a um na lista
+			lista.add(getCliente(cliente));
 		}
 
 		return lista;
@@ -85,13 +88,7 @@ public class ClienteService {
 		// obter os dados do cliente encontrado
 		Cliente cliente = result.get();
 
-		// criando objeto para receber os dados
-		ClienteGetDTO dto = new ClienteGetDTO();
-
-		// transferindo os dados da entidade pro dto
-		mapper.map(cliente, dto);
-
-		return dto;
+		return getCliente(cliente);
 	}
 
 	public ClienteGetDTO atualizar(ClientePutDTO dto) {
@@ -105,18 +102,26 @@ public class ClienteService {
 
 		// obter os dados do cliente encontrado
 		Cliente cliente = result.get();
+		
+		// convertendo os dados do endereço(dto) em putDto
+		EnderecoPutDTO putDto = new EnderecoPutDTO();
+		mapper.map(dto, putDto);
+		
+		// atualizando o endereço no banco
+		EnderecoGetDTO getDTO = endService.atualizar(putDto);
+		// convertendo o dto para Endereço
+		Endereco endereco = new Endereco();
+		mapper.map(getDTO, endereco);
 
 		// transferindo os dados do dto para o cliente
 		mapper.map(dto, cliente);
-
+		cliente.setEndereco(endereco);
+		
 		// salvando o cliente atualizado no banco
 		clienteRepository.save(cliente);
 
-		// passando o cliente para um dto
-		ClienteGetDTO getDto = new ClienteGetDTO();
-		mapper.map(cliente, getDto);
-
-		return getDto;
+		// convertendo o cliente em dto e retornando
+		return getCliente(cliente);
 	}
 
 	public String excluir(Integer idCliente) {
@@ -136,6 +141,15 @@ public class ClienteService {
 
 		String response = "Cliente " + cliente.getNome() + " excluído com sucesso.";
 		return response;
+	}
+
+	// Método para converter um Cliente em getDto
+	public ClienteGetDTO getCliente(Cliente cliente) {
+		ClienteGetDTO getDto = new ClienteGetDTO();
+		mapper.map(cliente, getDto);
+
+		return getDto;
+
 	}
 
 }
