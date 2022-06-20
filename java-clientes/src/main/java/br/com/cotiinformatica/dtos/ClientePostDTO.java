@@ -17,6 +17,7 @@ public class ClientePostDTO {
 	private String cpf;
 	
 	@NotBlank(message = "{telefone.not.blank}")
+	@Size(min= 8, max = 15, message = "{telefone.size}")
 	private String telefone;
 
 	@Email(message = "{email.email}")
@@ -37,6 +38,8 @@ public class ClientePostDTO {
 	
 	private String municipio;
 	private String estado;
+	
+	@Size(min= 8, max= 9, message = "{cep.size}")
 	private String cep;
 	
 	
