@@ -36,8 +36,9 @@
                     <thead>
                         <tr>
                             <th>Nome do Cliente</th>
-                            <th>CPF</th>
+                            <th>Telefone</th>
                             <th>Email</th>
+                            <th></th>
                             <th width="100">Operações</th>
                         </tr>
                     </thead>
@@ -45,8 +46,13 @@
                         <tr
                             *ngFor="let item of clientes | filter: pesquisa | paginate : { itemsPerPage : 5, currentPage : page }">
                             <td>{{item.nome}}</td>
-                            <td>{{item.cpf}}</td>
+                            <td>{{item.telefone}}</td>
                             <td>{{item.email}}</td>
+                            <td>
+                                <button class="btn btn-success btn-sm"(click)="buscarId(item.id)"
+                                data-target="#janela_detalhes" data-toggle="modal"> detalhes
+                                </button>
+                            </td>
                             <td>
                                 <button class="btn btn-danger btn-sm" (click)="buscarId(item.idCliente)"
                                     data-target="#janela_exclusao" data-toggle="modal">
@@ -130,7 +136,7 @@
                     <!-- Campo Oculto (idCliente)-->
                     <input type="hidden" formControlName="idCliente" [(ngModel)]="cliente.idCliente"/>
 
-                     <!--capturando o campo nome do formulário-->
+                    <!--capturando o campo nome do formulário-->
                     <div class="row">
                         <div class="col-md-5">
                             <label>Nome do Cliente:</label>

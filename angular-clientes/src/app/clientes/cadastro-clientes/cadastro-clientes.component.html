@@ -3,9 +3,10 @@
     <h1 class="h3 mb-0 text-gray-800">Cadastro de Clientes</h1>
 </div>
 
+
 <!-- Exibindo mensagens -->
 <div *ngIf="mensagemSucesso" class="w-50 p-2 alert alert-success alert-dismissible fade show" role="alert">
-     Cliente <strong>{{cliente.nome}}</strong>  cadastrado com sucesso.
+    Cliente <strong>{{cliente.nome}}</strong> cadastrado com sucesso.
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
@@ -23,14 +24,16 @@
     <div class="col-xl-12 col-md-12 mb-12">
         <div class="card border-left-primary shadow h-100 py-2">
             <div class="card-body">
+                <h5>Informações pessoais:</h5>
+                <br>
 
                 <!--Formulário da página-->
                 <form [formGroup]="formCadastro" (ngSubmit)="cadastrar()">
 
-                    <!--capturando o campo nome do formulário-->
                     <div class="row">
+                        <!--capturando o campo nome do formulário-->
                         <div class="col-md-5">
-                            <label>Nome do Cliente:</label>
+                            <label>Nome:</label>
                             <input type="text" class="form-control" formControlName="nome" maxlength="50" />
                             <!-- exibindo mensagens de validação-->
                             <span *ngIf="form.nome.touched && form.nome.invalid">
@@ -42,47 +45,153 @@
                                 </span>
                             </span>
                         </div>
-                    </div>
-                    <br />
 
-                    <!--capturando o campo cpf do formulário-->
-                    <div class="row">
+                        <!--capturando o campo cpf do formulário-->
                         <div class="col-md-3">
                             <label>CPF:</label>
-                            <input type="text" class="form-control" formControlName="cpf" maxlength="11" />
+                            <input type="text" class="form-control" formControlName="cpf" minlength="11" maxlength="11"  placeholder="99999999999" />
                             <!-- exibindo mensagens de validação-->
                             <span *ngIf="form.cpf.touched && form.cpf.invalid">
                                 <span *ngIf="form.cpf.errors.required" class="text-danger">
                                     <i class="fa fa-exclamation-circle"></i> Campo obrigatório.
                                 </span>
                                 <span *ngIf="form.cpf.errors.pattern" class="text-danger">
-                                    <i class="fa fa-exclamation-circle"></i> O cpf deve conter no mínimo 11 caracteres numéricos.
+                                    <i class="fa fa-exclamation-circle"></i> O cpf deve conter no mínimo 11
+                                    caracteres numéricos.
                                 </span>
                             </span>
                         </div>
                     </div>
-                    <br />
 
-                    <!--capturando o campo email do formulário-->
                     <div class="row">
-                        <div class="col-md-5">
-                            <label>Email:</label>
-                            <input type="text" class="form-control" formControlName="email" maxlength="40"/>
+                        <!--capturando o campo email do formulário-->
+                        <div class="col-md-3">
+                            <label>Telefone:</label>
+                            <input type="text" class="form-control" formControlName="telefone" minlength="8" maxlength="13" placeholder="99999999999 / 99 99999-9999"/>
                             <!-- exibindo mensagens de validação-->
-                            <span *ngIf="form.email.touched && form.email.invalid">
-                                <span *ngIf="form.email.errors.required" class="text-danger">
+                            <span *ngIf="form.telefone.touched && form.telefone.invalid">
+                                <span *ngIf="form.telefone.errors.required" class="text-danger">
                                     <i class="fa fa-exclamation-circle"></i> Campo obrigatório.
                                 </span>
+                                <span *ngIf="form.telefone.errors.pattern" class="text-danger">
+                                    <i class="fa fa-exclamation-circle"></i> O telefone deve conter entre 8 e 12 caracteres numéricos com o DDD
+                                </span>
+                            </span>
+                        </div>
+
+                        <!--capturando o campo email do formulário-->
+                        <div class="col-md-5">
+                            <label>Email:</label>
+                            <input type="text" class="form-control" formControlName="email" maxlength="40" />
+                            <!-- exibindo mensagens de validação-->
+                            <span *ngIf="form.email.touched && form.email.invalid">
                                 <span *ngIf="form.email.errors.pattern" class="text-danger">
                                     <i class="fa fa-exclamation-circle"></i> Email inválido.
                                 </span>
                             </span>
                         </div>
                     </div>
+
                     <br />
+                    <h5>Endereço:</h5>
+                    <br>
+
+                    <div class="row">
+                        <!--capturando o campo logradouro do formulário-->
+                        <div class="col-md-6">
+                            <label>Logradouro:</label>
+                            <input type="text" class="form-control" formControlName="logradouro" maxlength="60" />
+                            <!-- exibindo mensagens de validação-->
+                            <span *ngIf="form.logradouro.touched && form.logradouro.invalid">
+                                <span *ngIf="form.logradouro.errors.required" class="text-danger">
+                                    <i class="fa fa-exclamation-circle"></i> Campo obrigatório.
+                                </span>
+                                <span *ngIf="form.logradouro.errors.pattern" class="text-danger">
+                                    <i class="fa fa-exclamation-circle"></i> Você deve informar o logradouro(Ex Rua...,
+                                    Av...).
+                                </span>
+                            </span>
+                        </div>
+
+                        <!--capturando o campo número do formulário-->
+                        <div class="col-md-2">
+                            <label>Número:</label>
+                            <input type="text" class="form-control" formControlName="numero" maxlength="6" />
+                            <!-- exibindo mensagens de validação-->
+                            <span *ngIf="form.numero.touched && form.numero.invalid">
+                                <span *ngIf="form.numero.errors.required" class="text-danger">
+                                    <i class="fa fa-exclamation-circle"></i> Campo obrigatório.
+                                </span>
+                                <span *ngIf="form.numero.errors.pattern" class="text-danger">
+                                    <i class="fa fa-exclamation-circle"></i> apenas caracteres numéricos
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <!--capturando o campo complemento do formulário-->
+                        <div class="col-md-5">
+                            <label>Complemento:</label>
+                            <input type="text" class="form-control" formControlName="complemento" maxlength="70" />
+                        </div>
+
+                        <!--capturando o campo bairro do formulário-->
+                        <div class="col-md-3">
+                            <label>Bairro:</label>
+                            <input type="text" class="form-control" formControlName="bairro" maxlength="60" />
+                            <span *ngIf="form.bairro.touched && form.bairro.invalid">
+                                <span *ngIf="form.bairro.errors.required" class="text-danger">
+                                    <i class="fa fa-exclamation-circle"></i> Campo obrigatório.
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <!--capturando o campo Município do formulário-->
+                        <div class="col-md-7">
+                            <label>Município:</label>
+                            <input type="text" class="form-control" formControlName="municipio" maxlength="60" />
+                        </div>
+
+                        <!--capturando o campo Estado do formulário-->
+                        <div class="col-md-1">
+                            <label>Estado(UF):</label>
+                            <select class="form-control" formControlName="estado">
+                                <option value="">Selecione o Estado</option>
+                                <option *ngFor="let item of estados" value="{{item}}">
+                                    {{item | uppercase}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!--capturando o campo cep do formulário-->
+                    <div class="row">
+                        <div class="col-md-5">
+                            <label>Cep:</label>
+                            <input type="text" class="form-control" formControlName="cep" minlength="8" maxlength="9"  placeholder="99999-999"/>
+                            <span *ngIf="form.cep.touched && form.cep.invalid">
+                                <span *ngIf="form.cep.errors.pattern" class="text-danger">
+                                    <i class="fa fa-exclamation-circle"></i> apenas caracteres numéricos
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-5">
+                            <label for="observacao">Observação:</label>
+                            <textarea class="form-control" formControlName="observacao" id="observacao:" cols=""
+                                rows="3" maxlength="255"></textarea>
+                            <br>
+                        </div>
+                    </div>
 
                     <!--Botão ubmit chama a função cadastrarCliente passando o conteúdo do formCadastro -->
-                    <input [disabled]="!formCadastro.valid" type="submit" value="Cadastrar Cliente" class="btn btn-success" />
+                    <input [disabled]="!formCadastro.valid" type="submit" value="Cadastrar Cliente"
+                        class="btn btn-success" />
                 </form>
             </div>
         </div>

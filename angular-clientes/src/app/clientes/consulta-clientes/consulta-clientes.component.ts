@@ -29,7 +29,9 @@ export class ConsultaClientesComponent implements OnInit {
     idCliente: 0,
     nome: '',
     cpf: '',
-    email: ''
+    telefone: '',
+    email: '',
+    observacao: ''
   }
 
   //atributo para armazenar a listagem de clientes
