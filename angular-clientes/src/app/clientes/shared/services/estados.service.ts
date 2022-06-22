@@ -14,7 +14,7 @@ export class EstadosService {
   constructor(private httpClient: HttpClient) { }
 
   // BUSCAR TODOS
-  buscarTodos(){
+  buscarEstados(){
     return this.httpClient.get(this.endpoint);
   }
 }

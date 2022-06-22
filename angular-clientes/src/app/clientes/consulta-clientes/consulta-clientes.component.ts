@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Cliente } from '../shared/model/cliente';
 import { ClientesService } from '../shared/services/clientes.service';
+import { EstadosService } from '../shared/services/estados.service';
 
 @Component({
   selector: 'app-consulta-clientes',
@@ -10,7 +11,6 @@ import { ClientesService } from '../shared/services/clientes.service';
 })
 export class ConsultaClientesComponent implements OnInit {
 
- 
   //atributos
   mensagemSucesso = '';
   mensagemErro = '';
@@ -31,37 +31,96 @@ export class ConsultaClientesComponent implements OnInit {
     cpf: '',
     telefone: '',
     email: '',
-    observacao: ''
+    observacao: '',
+    endereco: {
+      idEndereco: 0,
+      logradouro: '',
+      numero: '',
+      complemento: '',
+      bairro: '',
+      municipio: '',
+      estado: '',
+      cep: ''
+    }
   }
 
-  //atributo para armazenar a listagem de clientes
+  //objeto para armazenar todos os Estados(array)
+  estados = [];
+
+  //atributo para armazenar a listagem de clientes(array de Cliente)
   clientes: Cliente[] = [];
   
   // INJEÇÃO DE DEPENDÊNCIA
-  constructor(private clientesService: ClientesService) { }
+  constructor(private clientesService: ClientesService, private formBuilder: FormBuilder, private estadosService: EstadosService) { }
 
   //objeto para capturar os campos do formulário
-  formEdicao = new FormGroup({
+  formEdicao = this.formBuilder.group({
 
     //declarando o campo 'idCliente' do formulário
-    idCliente: new FormControl([]),
+    idCliente: 0,
 
     //declarando o campo 'nome' do formulário
-    nome: new FormControl('', [
-      Validators.required, //torna o campo obrigatório
-      Validators.pattern(/\b[A-Za-zÀ-ú][A-Za-zÀ-ú]+,?\s[A-Za-zÀ-ú][A-Za-zÀ-ú]{2,19}\b/) // expressão regular (REGEX)
+    nome: ['',
+      //torna o campo obrigatório
+      [Validators.required,
+      //Regex para duas strings, separadas com espaço e com no mínimo 3 caracteres cada. Aceita acentuação e rejeita números.
+      Validators.pattern(/\b[A-Za-zÀ-ú][A-Za-zÀ-ú]+,?\s[A-Za-zÀ-ú][A-Za-zÀ-ú]{2,19}\b/)
+      ]
+    ],
 
-    ]),
+    //declarando o campo 'telefone' do formulário
+    telefone: ['',
+      [Validators.required, 
+      Validators.pattern (/^[0-9]{8,12}$/) // SOMENTE NÚMEROS
+      //Validators.pattern (/^\(?\d{2}\)?[\s-]?\d{5}-?\d{4}$/) 
+      ]
+    ],
 
     //declarando o campo 'email' do formulário
-    cpf: new FormControl([]),
+    email: ['',
+      Validators.pattern(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{3,3})+$/)
+    ],
 
-    //declarando o campo 'email' do formulário
-    email: new FormControl('', [
-      Validators.required, 
-      Validators.pattern(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{3,3})+$/) 
+    //declarando o campo 'observacao' do formulário
+    observacao: [''],
 
-    ])
+    //declarando o campo 'idEndereco' do formulário
+    idEndereco: 0,
+
+    //declarando o campo 'logradouro' do formulário
+    logradouro: ['',
+      [Validators.required,
+      Validators.pattern(/^([a-zA-Z]{0,1}[a-zA-Z]{1,}'?-?[a-zA-Z]\s?([a-zA-Z]{1,})?)/) ]
+    ],
+
+    //declarando o campo 'numero' do formulário
+    numero: ['',
+      [Validators.required,
+      Validators.pattern('^[0-9]{1,6}')
+      ]
+    ],
+
+    //declarando o campo 'complemento' do formulário
+    complemento: [''],
+
+    //declarando o campo 'bairro' do formulário
+    bairro: ['',
+      [Validators.required,
+      Validators.pattern(/^([a-zA-Z]{1,}[a-zA-Z]{1,}'?-?[a-zA-Z]\s?([a-zA-Z]{1,})?)/)]
+    ],
+
+    //declarando o campo 'municipio' do formulário
+    municipio: [''],
+
+    //declarando o campo 'estado' do formulário
+    estado: [''],
+
+    //declarando o campo 'cep' do formulário
+    cep: ['',
+      [Validators.pattern('^[0-9]{8}')]
+      //[Validators.pattern("^(\\d{5}(\\-\\d{3})?)?$")] regex com traço -
+    ]
+
   });
 
   //criando um objeto pra utilizar o formulário na página
@@ -70,15 +129,32 @@ export class ConsultaClientesComponent implements OnInit {
   }
 
   //FUNÇÃO EXECUTADA QUANDO O COMPONENTE É CARREGADO
-  ngOnInit(): void { 
+  ngOnInit(): void {
     this.buscarTodos();
+    this.buscarEstados();
+
+  }
+
+  // BUSCAR ESTADOS
+  buscarEstados(): void {
+
+    this.estadosService
+      .buscarEstados()
+      .subscribe(
+        (data) => {
+          this.estados = (data as []);
+        },
+        (e) => {
+          console.log(e)
+        }
+      );
   }
 
   // BUSCAR TODOS
   buscarTodos(): void {
     this.clientesService
     .buscarTodos()
-    .subscribe(clientes => (this.clientes = clientes), e => (console.log(e.error)));    
+    .subscribe(clientes => (this.clientes = clientes), e => (console.log(e.error)));  
   }
 
   // BUSCAR ID
@@ -95,6 +171,7 @@ export class ConsultaClientesComponent implements OnInit {
       .buscarId(idCliente)
       .subscribe(cliente => (this.cliente = cliente as any), e => (console.log(e.error)));
   }
+  
 
   // ATUALIZAR
   atualizar(): void {
@@ -103,6 +180,7 @@ export class ConsultaClientesComponent implements OnInit {
       .subscribe(
         (data) => {
           this.mensagemSucessoEdicao = data;
+          this.formEdicao.reset();
           this.ngOnInit();
         },
         (e) => {
@@ -132,6 +210,5 @@ export class ConsultaClientesComponent implements OnInit {
   handlePageChange(event: number) {
     this.page = event;
   }
-
 
 }

@@ -3,22 +3,6 @@
     <h1 class="h3 mb-0 text-gray-800">Cadastro de Clientes</h1>
 </div>
 
-
-<!-- Exibindo mensagens -->
-<div *ngIf="mensagemSucesso" class="w-50 p-2 alert alert-success alert-dismissible fade show" role="alert">
-    Cliente <strong>{{cliente.nome}}</strong> cadastrado com sucesso.
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
-
-<div *ngIf="mensagemErro" class="w-50 p-2 alert alert-danger mt-2 alert-dismissible fade show" role="alert">
-    <strong>Erro!</strong> {{mensagemErro}}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
-
 <!-- Página -->
 <div class="row">
     <div class="col-xl-12 col-md-12 mb-12">
@@ -44,6 +28,9 @@
                                     <i class="fa fa-exclamation-circle"></i> Você deve informar nome e sobrenome.
                                 </span>
                             </span>
+                            <div class="text-danger">
+                                <font size="2"><i>* obrigatório</i></font>
+                            </div>
                         </div>
 
                         <!--capturando o campo cpf do formulário-->
@@ -60,6 +47,9 @@
                                     caracteres numéricos.
                                 </span>
                             </span>
+                            <div class="text-danger">
+                                <font size="2"><i>* obrigatório</i></font>
+                            </div>
                         </div>
                     </div>
 
@@ -67,16 +57,19 @@
                         <!--capturando o campo email do formulário-->
                         <div class="col-md-3">
                             <label>Telefone:</label>
-                            <input type="text" class="form-control" formControlName="telefone" minlength="8" maxlength="13" placeholder="99999999999 / 99 99999-9999"/>
+                            <input type="text" class="form-control" formControlName="telefone" minlength="8" maxlength="11" placeholder="999999999 / xx999999999"/>
                             <!-- exibindo mensagens de validação-->
                             <span *ngIf="form.telefone.touched && form.telefone.invalid">
                                 <span *ngIf="form.telefone.errors.required" class="text-danger">
                                     <i class="fa fa-exclamation-circle"></i> Campo obrigatório.
                                 </span>
                                 <span *ngIf="form.telefone.errors.pattern" class="text-danger">
-                                    <i class="fa fa-exclamation-circle"></i> O telefone deve conter entre 8 e 12 caracteres numéricos com o DDD
+                                    <i class="fa fa-exclamation-circle"></i> O telefone deve conter entre 8 e 11 caracteres sem espaços e com o DDD
                                 </span>
                             </span>
+                            <div class="text-danger">
+                                <font size="2"><i>* obrigatório</i></font>
+                            </div>
                         </div>
 
                         <!--capturando o campo email do formulário-->
@@ -111,6 +104,9 @@
                                     Av...).
                                 </span>
                             </span>
+                            <div class="text-danger">
+                                <font size="2"><i>* obrigatório</i></font>
+                            </div>
                         </div>
 
                         <!--capturando o campo número do formulário-->
@@ -126,6 +122,9 @@
                                     <i class="fa fa-exclamation-circle"></i> apenas caracteres numéricos
                                 </span>
                             </span>
+                            <div class="text-danger">
+                                <font size="2"><i>* obrigatório</i></font>
+                            </div>
                         </div>
                     </div>
 
@@ -144,19 +143,25 @@
                                 <span *ngIf="form.bairro.errors.required" class="text-danger">
                                     <i class="fa fa-exclamation-circle"></i> Campo obrigatório.
                                 </span>
+                                <span *ngIf="form.bairro.errors.pattern" class="text-danger">
+                                    <i class="fa fa-exclamation-circle"></i> Você deve informar o bairro
+                                </span>
                             </span>
+                            <div class="text-danger">
+                                <font size="2"><i>* obrigatório</i></font>
+                            </div>
                         </div>
                     </div>
 
                     <div class="row">
                         <!--capturando o campo Município do formulário-->
-                        <div class="col-md-7">
+                        <div class="col-md-6">
                             <label>Município:</label>
                             <input type="text" class="form-control" formControlName="municipio" maxlength="60" />
                         </div>
 
                         <!--capturando o campo Estado do formulário-->
-                        <div class="col-md-1">
+                        <div class="col-md-2">
                             <label>Estado(UF):</label>
                             <select class="form-control" formControlName="estado">
                                 <option value="">Selecione o Estado</option>
@@ -171,10 +176,11 @@
                     <div class="row">
                         <div class="col-md-5">
                             <label>Cep:</label>
-                            <input type="text" class="form-control" formControlName="cep" minlength="8" maxlength="9"  placeholder="99999-999"/>
+                            <input type="text" class="form-control" formControlName="cep" minlength="8" maxlength="8" placeholder="99999999"/>
                             <span *ngIf="form.cep.touched && form.cep.invalid">
                                 <span *ngIf="form.cep.errors.pattern" class="text-danger">
-                                    <i class="fa fa-exclamation-circle"></i> apenas caracteres numéricos
+                                    <i class="fa fa-exclamation-circle"></i> apenas caracteres numéricos, sem espaços ou traços.
+                                    <i></i>
                                 </span>
                             </span>
                         </div>
@@ -190,10 +196,27 @@
                     </div>
 
                     <!--Botão ubmit chama a função cadastrarCliente passando o conteúdo do formCadastro -->
-                    <input [disabled]="!formCadastro.valid" type="submit" value="Cadastrar Cliente"
+                    <div>
+                        <input [disabled]="!formCadastro.valid" type="submit" value="Cadastrar Cliente"
                         class="btn btn-success" />
+                    </div>
+                    <!-- Exibindo mensagens -->
+                    <div *ngIf="mensagemSucesso" class="w-50 p-2 alert alert-success alert-dismissible fade show" role="alert">
+                        Cliente <strong>{{cliente.nome}}</strong> cadastrado com sucesso.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    
+                    <div *ngIf="mensagemErro" class="w-50 p-2 alert alert-danger mt-2 alert-dismissible fade show" role="alert">
+                        <strong>Erro!</strong> {{mensagemErro}}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+

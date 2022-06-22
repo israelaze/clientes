@@ -24,7 +24,7 @@ export class CadastroClientesComponent implements OnInit {
     email: '',
     observacao: '',
     endereco : {
-      idEndereco: '',
+      idEndereco: 0,
       logradouro: '',
       numero: '',
       complemento: '',
@@ -35,24 +35,15 @@ export class CadastroClientesComponent implements OnInit {
     }
   }
 
+  //objeto para armazenar todos os Estados(array)
   estados = [];
 
   //inicialização por meio de injeção de dependencia
   constructor(private formBuilder: FormBuilder, private clientesService: ClientesService, private estadosService: EstadosService) { }
 
   ngOnInit(): void {
- 
-  // BUSCAR TODOS OS ESTADOS
-    this.estadosService
-    .buscarTodos()
-    .subscribe(
-      (data) => {
-        this.estados = (data as []);
-      },
-      (e) => {
-        console.log(e)
-      }
-    );
+
+    this.buscarEstados();
   }
 
   //objeto para capturar os campos do formulário
@@ -70,28 +61,33 @@ export class CadastroClientesComponent implements OnInit {
     //declarando o campo 'cpf' do formulário
     cpf: ['',
       [Validators.required,
-      Validators.pattern('^[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}$') // expressão regular (REGEX)
+      Validators.pattern('^[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}$') 
       ]
     ],
 
     //declarando o campo 'telefone' do formulário
     telefone: ['',
-      [Validators.required, //torna o campo obrigatório
-      Validators.pattern (/^\(?\d{2}\)?[\s-]?\d{5}-?\d{4}$/) // expressão regular (REGEX)
-     //  Validators.pattern (/^[0-9]{12}$/) // expressão regular (REGEX)
+      [Validators.required, //torna o campo obrigatório 
+      Validators.pattern (/^[0-9]{8,12}$/)
+     //Validators.pattern (/^\(?\d{2}\)?[\s-]?\d{5}-?\d{4}$/)
 
       ]
     ],
 
     //declarando o campo 'email' do formulário
     email: ['',
-      Validators.pattern(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{3,3})+$/) // expressão regular (REGEX) 
+      Validators.pattern(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{3,3})+$/) 
     ],
+
+    //declarando o campo 'observacao' do formulário
+    observacao: [''],
 
     //declarando o campo 'logradouro' do formulário
     logradouro: ['',
       //torna o campo obrigatório
-      [Validators.required]
+      [Validators.required,
+      Validators.pattern(/^([a-zA-Z]{0,1}[a-zA-Z]{1,}'?-?[a-zA-Z]\s?([a-zA-Z]{1,})?)/) 
+      ]
     ],
 
     //declarando o campo 'numero' do formulário
@@ -108,7 +104,9 @@ export class CadastroClientesComponent implements OnInit {
     
     //declarando o campo 'bairro' do formulário
     bairro: ['',
-      [Validators.required]
+      [Validators.required,
+      Validators.pattern(/^([a-zA-Z]{1,}[a-zA-Z]{1,}'?-?[a-zA-Z]\s?([a-zA-Z]{1,})?)/)
+      ]
     ],
 
     //declarando o campo 'municipio' do formulário
@@ -119,11 +117,10 @@ export class CadastroClientesComponent implements OnInit {
 
     //declarando o campo 'cep' do formulário
     cep: ['',
-      [Validators.pattern("^(\\d{5}(\\-\\d{3})?)?$")] 
-    ],
+     [Validators.pattern('^[0-9]{8}')] 
+     //[Validators.pattern("^(\\d{5}(\\-\\d{3})?)?$")] regex com traço -
 
-    //declarando o campo 'observacao' do formulário
-    observacao: ['']
+    ]
 
   });
 
@@ -132,26 +129,35 @@ export class CadastroClientesComponent implements OnInit {
     return this.formCadastro.controls;
   }
 
+  // BUSCAR TODOS OS ESTADOS
+  buscarEstados(): void {
+
+    this.estadosService
+      .buscarEstados()
+      .subscribe(
+        (data) => {
+          this.estados = (data as []);
+        },
+        (e) => {
+          console.log(e)
+        }
+      );
+  }
+
   //CADASTRAR
   cadastrar(): void {
 
-    console.log(this.formCadastro.value.email)
-    console.log(this.cliente.endereco)
-
+    this.cliente = this.formCadastro.value;
 
     //limpar o conteúdo ds mensagens (sucesso ou erro)
     this.mensagemSucesso = '';
     this.mensagemErro = '';
 
-
-  
-
-    this.clientesService.cadastrar(this.formCadastro.value)
+    this.clientesService.cadastrar(this.cliente)
       .subscribe(
         (data) => {
           this.cliente = data as any;
           this.mensagemSucesso = 'Ok'; //incializando a variável
-          console.log(this.formCadastro.value.email)
           this.formCadastro.reset();
         },
         (e) => {
