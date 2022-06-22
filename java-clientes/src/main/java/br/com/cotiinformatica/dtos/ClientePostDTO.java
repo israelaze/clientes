@@ -39,7 +39,7 @@ public class ClientePostDTO {
 	private String municipio;
 	private String estado;
 	
-	@Size(min= 8, max= 9, message = "{cep.size}")
+	@Size(max= 9, message = "{cep.size}")
 	private String cep;
 	
 	
