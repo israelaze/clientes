@@ -199,6 +199,11 @@
                     <div>
                         <input [disabled]="!formCadastro.valid" type="submit" value="Cadastrar Cliente"
                         class="btn btn-success" />
+
+                        <!--Botão de navegação para retornar à tela home -->
+                        <div class="align-items-center">
+                            <button type="button" [routerLink]="['']" class="btn btn-link">voltar</button>
+                        </div>
                     </div>
                     <!-- Exibindo mensagens -->
                     <div *ngIf="mensagemSucesso" class="w-50 p-2 alert alert-success alert-dismissible fade show" role="alert">

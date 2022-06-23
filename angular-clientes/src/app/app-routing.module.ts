@@ -16,8 +16,8 @@ import { AuthGuard } from './usuarios/shared/auth.guard';
 //Rotas
 const routes: Routes = [ 
   //rota pai (carrega o componente principal)
-  { path: '', 
-    component: HomeComponent, 
+  { path: '', redirectTo: 'home', pathMatch: "full"},
+  { path: 'home', component: HomeComponent,
     //rotas filhas (carregam dentro do componente principal)
     children: [
       { path: 'cadastro-clientes', component: CadastroClientesComponent },
