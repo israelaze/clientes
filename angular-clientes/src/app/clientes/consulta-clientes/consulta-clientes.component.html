@@ -38,7 +38,7 @@
                             <th>Nome</th>
                             <th>Telefone</th>
                             <th></th>
-                            <th>Operações</th>
+                            <th [width]="100">Operações</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -48,7 +48,7 @@
                             <td>{{item.telefone}}</td>
                             <td>
                                 <button class="btn btn-success btn-sm" (click)="buscarId(item.idCliente)"
-                                    data-target="#janela_detalhes" data-toggle="modal">detalhes
+                                    data-target="#janela_detalhes" data-toggle="modal"> info
                                     <i class="fa fa-info-circle" aria-hidden="true"></i>
                                 </button>
                             </td>
@@ -81,7 +81,7 @@
 
                 <!--Botão de navegação para retornar à tela home -->
                 <div class="align-items-center">
-                    <button type="button" [routerLink]="['']" class="btn btn-link">voltar</button>
+                    <button type="button" routerLink='' class="btn btn-link">voltar</button>
                 </div>
             </div>
         </div>
