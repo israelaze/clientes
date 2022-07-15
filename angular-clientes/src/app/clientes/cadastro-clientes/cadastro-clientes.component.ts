@@ -16,7 +16,7 @@ export class CadastroClientesComponent implements OnInit {
   mensagemErro = '';
 
   //objeto para armazenar os dados do cliente cadastrado
-  cliente = {
+ /* cliente = {
     idCliente: 0,
     nome: '',
     cpf: '',
@@ -30,11 +30,13 @@ export class CadastroClientesComponent implements OnInit {
       complemento: '',
       bairro: '',
       municipio: '',
-      estado:'',
+      estado:'', 
       cep: ''
     }
   }
+*/
 
+  cliente:Cliente = new Cliente;
   //objeto para armazenar todos os Estados(array)
   estados = [];
 
@@ -162,9 +164,10 @@ export class CadastroClientesComponent implements OnInit {
         },
         (e) => {
           if (e.status == 400) {
-            this.mensagemErro = "O CPF informado já encontra-se cadastrado. Tente outro.";
+            console.log(e.error.message);
+            this.mensagemErro = e.error.message;
           } else {
-            console.log(e.error);
+            console.log(e.error.message);
           }
         }
       )

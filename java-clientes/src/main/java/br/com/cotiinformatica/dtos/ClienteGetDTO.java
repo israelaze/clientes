@@ -13,5 +13,5 @@ public class ClienteGetDTO {
 	private String telefone;
 	private String email;
 	private String observacao;
-	private EnderecoGetDTO endereco;
+	private EnderecoDTO endereco;
 }

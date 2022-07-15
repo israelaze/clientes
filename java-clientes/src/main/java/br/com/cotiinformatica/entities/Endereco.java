@@ -56,4 +56,16 @@ public class Endereco implements Serializable {
 	@OneToMany(mappedBy = "endereco")
 	private Set<Cliente> clientes = new HashSet<>();
 
+	public Endereco(Integer idEndereco, String logradouro, String numero, String complemento, String bairro,
+			String municipio, Estados estado, String cep) {
+		this.idEndereco = idEndereco;
+		this.logradouro = logradouro;
+		this.numero = numero;
+		this.complemento = complemento;
+		this.bairro = bairro;
+		this.municipio = municipio;
+		this.estado = estado;
+		this.cep = cep;
+	}
+	
 }

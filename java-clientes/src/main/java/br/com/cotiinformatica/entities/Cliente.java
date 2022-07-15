@@ -34,10 +34,10 @@ public class Cliente implements Serializable {
 	@Column(name = "cpf", length = 15, nullable = false, unique = true)
 	private String cpf;
 	
-	@Column(name = "telefone", length = 15, nullable = false)
+	@Column(name = "telefone", length = 15, nullable = false, unique = true)
 	private String telefone;
 	
-	@Column(name = "email", length = 60)
+	@Column(name = "email", length = 60, unique = true)
 	private String email;
 	
 	@Column(name = "observacao", length = 255)

@@ -11,5 +11,7 @@ import br.com.cotiinformatica.entities.Cliente;
 public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
 	
 	public Optional<Cliente> findByCpf(String cpf);
+	public Optional<Cliente> findByEmail(String email);
+	public Optional<Cliente> findByTelefone(String telefone);
 	
 }

@@ -196,10 +196,11 @@ export class ConsultaClientesComponent implements OnInit {
       .subscribe(
         (data) => {
           this.mensagemSucesso = data;
+          console.log(data);
           this.ngOnInit();
         },
         (e) => {
-          console.log(e.error)
+          console.log(e.error);
           this.mensagemErro = 'Cliente não encontrado';
 
         }

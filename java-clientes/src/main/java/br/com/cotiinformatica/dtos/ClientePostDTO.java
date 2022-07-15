@@ -41,6 +41,14 @@ public class ClientePostDTO {
 	
 	@Size(max= 9, message = "{cep.size}")
 	private String cep;
-	
+
+	//Verifica se o usuário inseriu um email
+	//Se o usuário não informar um email, retorne NULL 
+	public String getEmail() {
+		if(this.email.isBlank()) {
+			return null;
+		}
+		return email;
+	}
 	
 }
