@@ -114,11 +114,10 @@ public class ClienteService {
 		enderecoDto.setIdEndereco(cliente.getEndereco().getIdEndereco());
 		
 		// atualizando o endereço no banco
-		Endereco endereco = endService.atualizar(enderecoDto);
+		endService.atualizar(enderecoDto);
 		
 		// transferindo os dados do dto para o cliente
 		mapper.map(dto, cliente);
-		cliente.setEndereco(endereco);
 		
 		// salvando o cliente atualizado no banco
 		clienteRepository.save(cliente);
