@@ -58,9 +58,10 @@ public class ClienteService {
 		Endereco endereco = endService.cadastrar(enderecoDto);
 
 		// cadastrando novo Cliente
-		Cliente cliente = new Cliente();
-		mapper.map(dto, cliente);
+		Cliente cliente = mapper.map(dto, Cliente.class);
+		// setando o endereço ao cliente
 		cliente.setEndereco(endereco);
+		
 		clienteRepository.save(cliente);
 
 		// convertendo o cliente em dto e retornando
@@ -105,19 +106,25 @@ public class ClienteService {
 		if (result.isEmpty()) {
 			throw new EntityNotFoundException("Cliente não encontrado!");
 		}
-
+		
+		// Cliente encontrado
 		Cliente cliente = result.get();
-
-		// convertendo os dados do endereço(dto) em EnderecoDto
+		// Endereco do cliente
+		Endereco end1 = cliente.getEndereco();
+		
+		// convertendo os dados do dto(Endereco) em EnderecoDto
 		EnderecoDTO enderecoDto = mapper.map(dto, EnderecoDTO.class);
 		// setando o idEndereco do endereço do Cliente
-		enderecoDto.setIdEndereco(cliente.getEndereco().getIdEndereco());
+		enderecoDto.setIdEndereco(end1.getIdEndereco());
 		
 		// atualizando o endereço no banco
-		endService.atualizar(enderecoDto);
+		Endereco endereco = endService.atualizar(enderecoDto);
 		
 		// transferindo os dados do dto para o cliente
 		mapper.map(dto, cliente);
+		if(end1.getIdEndereco() != endereco.getIdEndereco()) {
+			cliente.setEndereco(endereco);
+		}
 		
 		// salvando o cliente atualizado no banco
 		clienteRepository.save(cliente);
@@ -131,16 +138,20 @@ public class ClienteService {
 		// procurar o cliente no banco de dados atraves do id
 		Optional<Cliente> result = clienteRepository.findById(idCliente);
 
-		// verificar se o cliente não foi encontrado..
+		// verificar se o cliente foi encontrado..
 		if (result.isEmpty()) {
 			throw new EntityNotFoundException("Cliente não encontrado!");
 		}
 
-		// obter os dados do cliente encontrado
+		// Cliente
 		Cliente cliente = result.get();
+		// Endereço do cliente
+		Endereco endereco = cliente.getEndereco();
 
+		// Excluindo cliente e seu endereço
 		clienteRepository.delete(cliente);
-
+		endService.excluir(endereco.getIdEndereco());
+		
 		String response = "Cliente " + cliente.getNome() + " excluído com sucesso.";
 		return response;
 	}

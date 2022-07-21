@@ -2,6 +2,7 @@ package br.com.cotiinformatica.entities;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -67,5 +68,24 @@ public class Endereco implements Serializable {
 		this.estado = estado;
 		this.cep = cep;
 	}
-	
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Endereco other = (Endereco) obj;
+		return Objects.equals(bairro, other.bairro) && Objects.equals(cep, other.cep)
+				&& Objects.equals(complemento, other.complemento) && Objects.equals(logradouro, other.logradouro)
+				&& Objects.equals(municipio, other.municipio) && Objects.equals(numero, other.numero);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(bairro, cep, complemento, logradouro, municipio, numero);
+	}
+		
 }

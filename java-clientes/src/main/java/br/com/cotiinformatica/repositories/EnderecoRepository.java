@@ -10,6 +10,6 @@ import br.com.cotiinformatica.entities.Endereco;
 @Repository
 public interface EnderecoRepository extends JpaRepository<Endereco, Integer> {
 
-	Optional<Endereco> findByNumeroAndCepAndComplemento(String numero, String cep, String Complemento);
+	Optional<Endereco> findByLogradouroAndNumeroAndComplementoAndCep(String logradouro, String numero, String Complemento, String cep);
 
 }
