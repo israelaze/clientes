@@ -29,14 +29,14 @@ public class ClienteService {
 	private final EnderecoService endService;
 	private final ModelMapper mapper;
 
-	public ClienteGetDTO cadastrar(ClientePostDTO dto) {
+	public ClienteGetDTO cadastrar(ClientePostDTO dto) throws Exception {
 
 		// verificar se o CPF já está cadastrado(obrigatório)
 		Optional<Cliente> result = clienteRepository.findByCpf(dto.getCpf());
 		if (result.isPresent()) {
 			throw new BadRequestException("O CPF informado já encontra-se cadastrado. Tente outro.");
 		}
-		
+	
 		// verificar se o telefone já está cadastrado(obrigatório)
 		Optional<Cliente> result2 = clienteRepository.findByTelefone(dto.getTelefone());
 		if (result2.isPresent()) {
@@ -109,6 +109,26 @@ public class ClienteService {
 		
 		// Cliente encontrado
 		Cliente cliente = result.get();
+		
+		
+		// verificar se o telefone já está cadastrado(obrigatório)
+		Optional<Cliente> result2 = clienteRepository.findByTelefone(dto.getTelefone());
+		if (result2.isPresent()) {
+			if(result2.get().getIdCliente() != cliente.getIdCliente()) {
+				throw new BadRequestException("O telefone informado já encontra-se cadastrado. Tente outro.");
+			}
+		}
+
+		// Se usuário inserir email, verificar se ele já está cadastrado
+		if (dto.getEmail() != null) {
+			Optional<Cliente> result3 = clienteRepository.findByEmail(dto.getEmail());
+			if (result3.isPresent()) {
+				if(result3.get().getIdCliente() != cliente.getIdCliente()) {
+					throw new BadRequestException("O email informado já encontra-se cadastrado. Tente outro.");
+				}
+			}
+		}
+
 		// Endereco do cliente
 		Endereco end1 = cliente.getEndereco();
 		

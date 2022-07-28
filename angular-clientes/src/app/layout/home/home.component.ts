@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthGet } from 'src/app/usuarios/shared/model/authGet';
 import { AuthService } from 'src/app/usuarios/shared/services/auth.service';
 
 @Component({
@@ -9,14 +10,8 @@ import { AuthService } from 'src/app/usuarios/shared/services/auth.service';
 })
 export class HomeComponent implements OnInit {
 
-  
   // objeto para armazenar os dados do usuario autenticado.. 
-  authGet = {
-    idUsuario: 0,
-    nome: '',
-    email: '',
-    accessToken: ''
-  };
+  authGet = new AuthGet;
 
   //injeção de depend~encia
   constructor(private router: Router, private authService: AuthService) { }

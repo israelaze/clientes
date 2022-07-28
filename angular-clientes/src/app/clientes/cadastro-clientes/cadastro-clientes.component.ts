@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Cliente } from '../shared/model/cliente';
+import { Endereco } from '../shared/model/endereco';
 import { ClientesService } from '../shared/services/clientes.service';
+import { EnderecoService } from '../shared/services/endereco.service';
 import { EstadosService } from '../shared/services/estados.service';
 
 @Component({
@@ -14,39 +16,20 @@ export class CadastroClientesComponent implements OnInit {
   //atributos (campos)
   mensagemSucesso = '';
   mensagemErro = '';
+  mensagemErroCep = '';
 
-  //objeto para armazenar os dados do cliente cadastrado
- /* cliente = {
-    idCliente: 0,
-    nome: '',
-    cpf: '',
-    telefone: '',
-    email: '',
-    observacao: '',
-    endereco : {
-      idEndereco: 0,
-      logradouro: '',
-      numero: '',
-      complemento: '',
-      bairro: '',
-      municipio: '',
-      estado:'', 
-      cep: ''
-    }
-  }
-*/
+  //atributo para armazenar os dados de apenas 1 Cliente
+  cliente: Cliente = new Cliente;
 
-  cliente:Cliente = new Cliente;
+  //atributo para armazenar os dados do endereco
+  endereco: Endereco = new Endereco;
+
   //objeto para armazenar todos os Estados(array)
   estados = [];
 
   //inicialização por meio de injeção de dependencia
-  constructor(private formBuilder: FormBuilder, private clientesService: ClientesService, private estadosService: EstadosService) { }
-
-  ngOnInit(): void {
-
-    this.buscarEstados();
-  }
+  constructor(private formBuilder: FormBuilder, private clientesService: ClientesService, 
+    private estadosService: EstadosService, private enderecoService: EnderecoService) { }
 
   //objeto para capturar os campos do formulário
   formCadastro = this.formBuilder.group({
@@ -103,7 +86,6 @@ export class CadastroClientesComponent implements OnInit {
     //declarando o campo 'complemento' do formulário
     complemento: [''],
 
-    
     //declarando o campo 'bairro' do formulário
     bairro: ['',
       [Validators.required,
@@ -118,12 +100,17 @@ export class CadastroClientesComponent implements OnInit {
     estado: [''],
 
     //declarando o campo 'cep' do formulário
-    cep: ['',
-     [Validators.pattern('^[0-9]{8}')] 
-     //[Validators.pattern("^(\\d{5}(\\-\\d{3})?)?$")] regex com traço -
+    cep: ['']
 
+  });
+
+  //objeto para capturar o CEP
+  formCep = this.formBuilder.group({
+    //declarando o campo 'cep' do formulário
+    cep: ["" ,
+    [Validators.pattern(/^(\d{5}|\d{5}\-?\d{3})$/)] // aceita traço
     ]
-
+    
   });
 
   //criando um objeto pra utilizar o formulário na página
@@ -131,46 +118,63 @@ export class CadastroClientesComponent implements OnInit {
     return this.formCadastro.controls;
   }
 
+   //criando um objeto pra utilizar o formulário na página
+   get buscarCep(): any {
+    return this.formCep.controls;
+  }
+
+  ngOnInit(): void {
+    this.buscarEstados();
+  }
+
   // BUSCAR TODOS OS ESTADOS
   buscarEstados(): void {
 
     this.estadosService
       .buscarEstados()
-      .subscribe(
-        (data) => {
-          this.estados = (data as []);
-        },
-        (e) => {
-          console.log(e)
-        }
-      );
+      .subscribe({
+        next: data => this.estados = (data as []),
+        error: _e => this.mensagemErro = 'Não foi possível carregar os Estados.'
+    })
   }
 
-  //CADASTRAR
+  // BUSCAR ENDERECO POR CEP
+  buscarEnderecoAPI(): void {
+
+    // limpando mensagens
+    this.mensagemErroCep ='';
+    
+    let cep = this.formCep.value.cep;
+
+    if (cep) {
+    
+      this.enderecoService.buscarEnderecoAPI(cep)
+        .subscribe({
+          next: endereco => this.endereco = endereco,    
+          error: _e  => this.mensagemErroCep = 'Cep inválido.'
+        })
+    }
+  
+  }
+
+  //CADASTRAR 
   cadastrar(): void {
 
-    this.cliente = this.formCadastro.value;
+    let cliente = this.formCadastro.value;
 
-    //limpar o conteúdo ds mensagens (sucesso ou erro)
+    //limpar o conteúdo das mensagens
     this.mensagemSucesso = '';
     this.mensagemErro = '';
 
-    this.clientesService.cadastrar(this.cliente)
-      .subscribe(
-        (data) => {
-          this.cliente = data as any;
-          this.mensagemSucesso = 'Ok'; //incializando a variável
+    this.clientesService.cadastrar(cliente)
+      .subscribe({
+        next: cliente => {
+          this.cliente = cliente;
+          this.mensagemSucesso = 'cadastrado com sucesso.';
           this.formCadastro.reset();
         },
-        (e) => {
-          if (e.status == 400) {
-            console.log(e.error.message);
-            this.mensagemErro = e.error.message;
-          } else {
-            console.log(e.error.message);
-          }
-        }
-      )
+        error: (e) => this.mensagemErro = e.error.message
+      })
   }
 
 }

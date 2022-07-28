@@ -15,7 +15,7 @@
                                         <h1 class="h4 text-gray-900 mb-4">Bem-vindo!</h1>
                                     </div>
                                     <!--Formulário de autenticação -->
-                                    <form [formGroup]="formLogin" (ngSubmit)="login()" class="user">
+                                    <form [formGroup]="formLogin" (ngSubmit)="logar()" class="user">
 
                                         <!--Exibindo mensagens de erro-->
                                         <div *ngIf="mensagemErro" class="alert alert-danger">
@@ -59,8 +59,8 @@
 
                                         <!--Botão submit chama a função autenticar() passando o conteúdo do formLogin-->
                                         <button type="submit" [disabled]="!formLogin.valid"
-                                            class="btn btn-primary btn-user btn-block"> Entrar </button>
-
+                                            class="btn btn-primary btn-user btn-block"> Entrar 
+                                        </button>
                                     </form>
                                     <hr>
                                     <div class="text-center">

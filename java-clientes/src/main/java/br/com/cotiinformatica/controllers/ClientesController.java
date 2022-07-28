@@ -25,18 +25,18 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 
+@CrossOrigin
 @RestController
 @AllArgsConstructor
 @Api(tags = "Menu Clientes")
 @RequestMapping(value = "/api/clientes")
-@CrossOrigin
 public class ClientesController {
 
 	private final ClienteService service;
 
 	@PostMapping
 	@ApiOperation(value = "cadastrar")
-	public ResponseEntity<ClienteGetDTO> cadastrar(@Valid @RequestBody ClientePostDTO dto) {
+	public ResponseEntity<ClienteGetDTO> cadastrar(@Valid @RequestBody ClientePostDTO dto) throws Exception {
 
 		try {
 			ClienteGetDTO getDto = service.cadastrar(dto);

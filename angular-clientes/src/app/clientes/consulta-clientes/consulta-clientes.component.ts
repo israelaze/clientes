@@ -25,31 +25,16 @@ export class ConsultaClientesComponent implements OnInit {
   page = 1;
 
   //atributo para armazenar os dados de apenas 1 Cliente
-  cliente = {
-    idCliente: 0,
-    nome: '',
-    cpf: '',
-    telefone: '',
-    email: '',
-    observacao: '',
-    endereco: {
-      idEndereco: 0,
-      logradouro: '',
-      numero: '',
-      complemento: '',
-      bairro: '',
-      municipio: '',
-      estado: '',
-      cep: ''
-    }
-  }
+  cliente: Cliente = new Cliente;
+  clienteGet: Cliente = new Cliente;
+
+
+  //atributo para armazenar a listagem de clientes(array de Cliente)
+  clientes: Cliente[] = [];
 
   //objeto para armazenar todos os Estados(array)
   estados = [];
 
-  //atributo para armazenar a listagem de clientes(array de Cliente)
-  clientes: Cliente[] = [];
-  
   // INJEÇÃO DE DEPENDÊNCIA
   constructor(private clientesService: ClientesService, private formBuilder: FormBuilder, private estadosService: EstadosService) { }
 
@@ -117,8 +102,7 @@ export class ConsultaClientesComponent implements OnInit {
 
     //declarando o campo 'cep' do formulário
     cep: ['',
-      [Validators.pattern('^[0-9]{8}')]
-      //[Validators.pattern("^(\\d{5}(\\-\\d{3})?)?$")] regex com traço -
+      [Validators.pattern(/^(\d{5}|\d{5}\-?\d{3})$/)] // aceita traço
     ]
 
   });
@@ -135,26 +119,23 @@ export class ConsultaClientesComponent implements OnInit {
 
   }
 
-  // BUSCAR ESTADOS
+  // BUSCAR TODOS OS ESTADOS
   buscarEstados(): void {
 
-    this.estadosService
-      .buscarEstados()
-      .subscribe(
-        (data) => {
-          this.estados = (data as []);
-        },
-        (e) => {
-          console.log(e)
-        }
-      );
+    this.estadosService.buscarEstados()
+      .subscribe({
+        next: data => this.estados = (data as []),
+        error: e => console.log(e.error)
+      })
   }
 
   // BUSCAR TODOS
   buscarTodos(): void {
-    this.clientesService
-    .buscarTodos()
-    .subscribe(clientes => (this.clientes = clientes), e => (console.log(e.error)));  
+    this.clientesService.buscarTodos()
+    .subscribe({
+      next: clientes => this.clientes = clientes,
+      error: e => console.log(e.error)
+    })
   }
 
   // BUSCAR ID
@@ -167,44 +148,46 @@ export class ConsultaClientesComponent implements OnInit {
     this.mensagemSucessoEdicao = '';
     this.mensagemErroEdicao = '';
 
-    this.clientesService
-      .buscarId(idCliente)
-      .subscribe(cliente => (this.cliente = cliente as any), e => (console.log(e.error)));
+    this.clientesService.buscarId(idCliente)
+    .subscribe({
+      next: cliente => this.cliente = cliente,
+      error: e => console.log(e.error)
+    })
   }
   
-
   // ATUALIZAR
   atualizar(): void {
-    this.clientesService
-      .atualizar(this.formEdicao.value)
-      .subscribe(
-        (data) => {
-          this.mensagemSucessoEdicao = data;
+
+    // limpando mensagens
+    this.mensagemErroEdicao = '';
+
+    this.clientesService.atualizar(this.formEdicao.value)
+      .subscribe({
+        next: clienteGet => {
+          this.clienteGet = clienteGet;
+          this.mensagemSucessoEdicao = ' atualizado com sucesso.';
           this.formEdicao.reset();
           this.ngOnInit();
         },
-        (e) => {
-          this.mensagemErroEdicao = e.error();
+        error: e => {
+          this.mensagemErroEdicao = e.error.message,
           this.ngOnInit();
         }
-      )
+      })
+
   }
 
   // EXCLUIR
   excluir(idCliente: number): void {
     this.clientesService.excluir(idCliente)
-      .subscribe(
-        (data) => {
-          this.mensagemSucesso = data;
-          console.log(data);
-          this.ngOnInit();
-        },
-        (e) => {
-          console.log(e.error);
-          this.mensagemErro = 'Cliente não encontrado';
+      .subscribe({
+        next: data => (
+          this.mensagemSucesso = data, 
+          this.ngOnInit()
+        ),
+        error: e => this.mensagemErro = e.error.message
+      })
 
-        }
-      )
   }
 
   // PAGINAÇÃO

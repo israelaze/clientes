@@ -25,9 +25,9 @@ public class Seed implements CommandLineRunner{
 	public void run(String... args) throws Exception {
 
 	// CADASTRANDO ENDEREÇOS
-	Endereco end1 = new Endereco(null, "Av Robert", "500", "Apto 20", "Bnh", "Mesquita", Estados.RJ, "00000000");
-	Endereco end2 = new Endereco(null, "Rua Alves", "40", "", "Barra Funda", "São Paulo", Estados.SP, "11111111");
-	Endereco end3 = new Endereco(null, "Rua Rufino", "23", "Edificio Solar, Sala 99", "Abranches", "Curitiba", Estados.PR, "33333333");
+	Endereco end1 = new Endereco(null, "Av Robert", "500", "Apto 20", "Bnh", "Mesquita", Estados.RJ, "00000-000");
+	Endereco end2 = new Endereco(null, "Rua Alves", "40", "", "Barra Funda", "São Paulo", Estados.SP, "11111-111");
+	Endereco end3 = new Endereco(null, "Rua Rufino", "23", "Edificio Solar, Sala 99", "Abranches", "Curitiba", Estados.PR, "33333-333");
 	
 	enderecoRepository.saveAll(Arrays.asList(end1, end2, end3));
 

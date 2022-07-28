@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Usuario } from '../shared/model/usuario.model';
 import { UsuariosService } from '../shared/services/usuarios.service';
 
 @Component({
@@ -14,11 +15,7 @@ export class CadastroUsuariosComponent implements OnInit {
   mensagemSucesso = '';
   
   //objeto para armazenar os dados do usuario cadastrado.. 
-  usuario = {
-    idUsuario: 0,
-    nome: '',
-    email: ''
-  };
+  usuario = new Usuario;
 
   //injeção de dependencia..
   constructor(private formBuilder: FormBuilder, private usuariosService: UsuariosService) { }
@@ -61,21 +58,19 @@ export class CadastroUsuariosComponent implements OnInit {
     this.mensagemSucesso = '';
     this.mensagemErro = '';
 
-    this.usuariosService.cadastrar(this.formCadastro.value)
-      .subscribe(
-        (data) => {
+    this.usuario = this.formCadastro.value;
+    this.usuariosService.cadastrar(this.usuario)
+      .subscribe({
+        next: (data) => {
           this.usuario = data as any;
-          this.mensagemSucesso = 'ok';
+          this.mensagemSucesso = 'cadastrado com sucesso';
           this.formCadastro.reset({ nome: '', email: '', senha: '' });
         },
-        (e) => {
-          if (e.status == 400) {
-            this.mensagemErro = 'O email informado já encontra-se cadastrado, por favor tente outro.'
-          }else{
-            console.log(e.error)
-          } 
-        }
-      )
+        error: (e) => {
+          this.mensagemErro = e.error.message;
+        }, 
+        complete: () => console.log('Usuário cadastrado')
+      })
   }
 
 }

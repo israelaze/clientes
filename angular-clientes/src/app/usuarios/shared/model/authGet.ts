@@ -1,6 +1,6 @@
-export class Usuario {
+export class AuthGet {
     idUsuario!: number;
     nome!: string;
     email!: string;
-    senha!: string;
-  }
+    accessToken!: string;
+}

@@ -25,7 +25,7 @@ public class EnderecoService {
 	private final EnderecoRepository enderecoRepository;
 	private final ModelMapper mapper;
 
-	public Endereco cadastrar(EnderecoDTO dto) {
+	public Endereco cadastrar(EnderecoDTO dto) throws Exception {
 
 		// buscando um endereço existente no banco
 		Optional<Endereco> result = enderecoRepository.findByLogradouroAndNumeroAndComplementoAndCep(
@@ -34,12 +34,12 @@ public class EnderecoService {
 		// caso exista, retorne o mesmo endereço
 		if (result.isPresent()) {
 			Endereco endereco = result.get();
-
 			return endereco;
 		}
 		
 		// convertendo o dto em endereço
 		Endereco endereco = dtoToEndereco(dto);
+
 		enderecoRepository.save(endereco);
 
 		return endereco;
@@ -87,12 +87,6 @@ public class EnderecoService {
 			enderecoRepository.save(end);
 			return end;
 		}
-		
-		// endereco do dto
-		Endereco end2 = dtoToEndereco(dto);
-		if(endereco.equals(end2)){
-			return endereco;
-		}
 		 
 		// convertendo dto em Endereco
 		endereco = dtoToEndereco(dto);
@@ -131,5 +125,6 @@ public class EnderecoService {
 		Endereco endereco = mapper.map(dto, Endereco.class);
 		return endereco;
 	}
+	
 
 }

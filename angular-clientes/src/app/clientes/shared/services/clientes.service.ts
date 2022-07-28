@@ -31,8 +31,8 @@ export class ClientesService {
   }
 
   // ATUALIZAR
-  atualizar(cliente: Cliente){
-    return this.httpClient.put(this.endpoint, cliente, { responseType: 'text' });
+  atualizar(cliente: Cliente): Observable<Cliente>{
+    return this.httpClient.put<Cliente>(this.endpoint, cliente);
   }
 
   // EXCLUIR

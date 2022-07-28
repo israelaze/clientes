@@ -1,6 +1,9 @@
+import { localizedString } from '@angular/compiler/src/output/output_ast';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthGet } from '../shared/model/authGet';
+import { Login } from '../shared/model/login.model';
 import { AuthService } from '../shared/services/auth.service';
 
 @Component({
@@ -15,17 +18,14 @@ export class LoginComponent implements OnInit{
   mensagemSucesso= '';
   
   //objeto para armazenar os dados do usuario autenticado.. 
-  authGet = {
-    idUsuario: 0,
-    nome: '',
-    email: '',
-    accessToken: ''
-  }; 
+  authGet = new AuthGet;
 
+  //objeto para armazenar os dados inseridos formulário
+  login = new Login;
+ 
   //injeção de dependencia..
-  constructor(private formBuilder: FormBuilder,
-     private authService: AuthService, 
-     private router: Router
+  constructor(private formBuilder: FormBuilder, private router: Router,
+    private authService: AuthService 
   ) {}
 
   // método executado antes do componente ser carregado..
@@ -54,41 +54,26 @@ export class LoginComponent implements OnInit{
   }
 
   //método para logar
-  login(): void {
+  logar(): void {
+
+    this.login = this.formLogin.value;
 
     //função recebe um objeto (usuário autenticado)
-    this.authService.autenticar(this.formLogin.value)
-      .subscribe(
-        (data) => {
-
+    this.authService.autenticar(this.login)
+      .subscribe({
+        next: (data) => {
           //recebendo os dados do usuário autenticado
           this.authGet = (data as any);
-
           //gravando os dados do usuario em uma localStorage..
           localStorage.setItem("AUTH", JSON.stringify(this.authGet));
-
           //navegando para rota vazia
-          this.router.navigate(['']);
-
+          return this.router.navigate(['']);
         },
-        (e) => {
-          //exibindo mensagens de erro
-          console.log(e.error.message);
+        error: (e) => {
           this.mensagemErro = e.error.message;
-
-        }
-      )
+        }, 
+        complete: () => console.log('Usuário logado')
+      })
   }
-
+  
 }
-
-
-
-
-
-
-
-
-
-
-

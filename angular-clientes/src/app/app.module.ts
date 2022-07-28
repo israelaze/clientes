@@ -34,7 +34,7 @@ import { httpInterceptorProviders } from './_interceptors';
     Ng2SearchPipeModule,      
     HttpClientModule,
     FormsModule,                         
-    ReactiveFormsModule
+    ReactiveFormsModule.withConfig({warnOnNgModelWithFormControl: 'always'})
   ],
   //provedores de interceptação
   providers: [
