@@ -37,7 +37,7 @@
                         <tr>
                             <th>Nome</th>
                             <th>Telefone</th>
-                            <th></th>
+                            <th>Detalhes</th>
                             <th [width]="100">Operações</th>
                         </tr>
                     </thead>
@@ -48,7 +48,7 @@
                             <td>{{item.telefone}}</td>
                             <td>
                                 <button class="btn btn-success btn-sm" (click)="buscarId(item.idCliente)"
-                                    data-target="#janela_detalhes" data-toggle="modal"> info
+                                    data-target="#janela_detalhes" data-toggle="modal">
                                     <i class="fa fa-info-circle" aria-hidden="true"></i>
                                 </button>
                             </td>
@@ -286,7 +286,7 @@
                                 maxlength="9" />
                             <span *ngIf="form.cep.touched && form.cep.invalid">
                                 <span *ngIf="form.cep.errors.pattern" class="text-danger">
-                                    <i class="fa fa-exclamation-circle"></i> apenas caracteres numéricos,
+                                    <i class="fa fa-exclamation-circle"></i> apenas caracteres numéricos, com ou sem traço.
                                 </span>
                             </span>
                         </div>

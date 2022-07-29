@@ -172,6 +172,7 @@ export class CadastroClientesComponent implements OnInit {
           this.cliente = cliente;
           this.mensagemSucesso = 'cadastrado com sucesso.';
           this.formCadastro.reset();
+          this.formCep.reset();
         },
         error: (e) => this.mensagemErro = e.error.message
       })
