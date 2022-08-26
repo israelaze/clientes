@@ -13,6 +13,8 @@ public class AuthGetDTO {
 	private String nome;
 	private String email;
 	private String accessToken;
+	
+	
 }
 
 
