@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 public class AuthGetDTO {
 
+	//altera
 	private Integer idUsuario;
 	private String nome;
 	private String email;
