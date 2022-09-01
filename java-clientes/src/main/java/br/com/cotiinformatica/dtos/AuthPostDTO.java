@@ -14,5 +14,5 @@ public class AuthPostDTO {
 	
 	@NotBlank(message =  "{senha.not.blank}")
 	private String senha;
-	
+	//
 }
