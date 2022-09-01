@@ -14,4 +14,8 @@ public class AuthPostDTO {
 	
 	@NotBlank(message =  "{senha.not.blank}")
 	private String senha;
+<<<<<<< HEAD
+	//
+=======
+>>>>>>> refs/heads/homolog
 }
